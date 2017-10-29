@@ -77,12 +77,12 @@
         .attr("d", path);
 
         // Add blue foreground lines for focus.
-        foreground = svg.append("g")
+        /*foreground = svg.append("g")
         .attr("class", "foreground")
         .selectAll("path")
         .data(cars)
         .enter().append("path")
-        .attr("d", path);
+        .attr("d", path);*/
 
         // Add a group element for each dimension.
         var g = svg.selectAll(".dimension")
@@ -149,20 +149,11 @@
         return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
       }
 
-      //function brushstart() {
-      //  d3.event.sourceEvent.stopPropagation();
-      //}
+      function brushstart() {
+        d3.event.sourceEvent.stopPropagation();
+      }
 
       // Handles a brush event, toggling the display of foreground lines.
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-/*
->>>>>>> 65c7e8b86e25b5b0b5abcb7d9cb42ee2e6e58e04
-=======
-/*
->>>>>>> 65c7e8b86e25b5b0b5abcb7d9cb42ee2e6e58e04
       function brush() {
         var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
         extents = actives.map(function(p) { return y[p].brush.extent(); });
@@ -171,7 +162,7 @@
             return extents[i][0] <= d[p] && d[p] <= extents[i][1];
           }) ? null : "none";
         });
-      }*/
+      }
     </script>
   </body>
 </html>
