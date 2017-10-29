@@ -36,9 +36,9 @@
         cursor: move;
       }
     </style>
+    <script src="//d3js.org/d3.v3.min.js"></script>
   </head>
   <body>
-    <script src="//d3js.org/d3.v3.min.js"></script>
     <script>
       var margin = {top: 30, right: 10, bottom: 10, left: 10},
       width = 960 - margin.left - margin.right,
@@ -149,11 +149,16 @@
         return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
       }
 
-      function brushstart() {
-        d3.event.sourceEvent.stopPropagation();
-      }
+      //function brushstart() {
+      //  d3.event.sourceEvent.stopPropagation();
+      //}
 
       // Handles a brush event, toggling the display of foreground lines.
+<<<<<<< HEAD
+
+=======
+/*
+>>>>>>> 65c7e8b86e25b5b0b5abcb7d9cb42ee2e6e58e04
       function brush() {
         var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
         extents = actives.map(function(p) { return y[p].brush.extent(); });
@@ -162,7 +167,7 @@
             return extents[i][0] <= d[p] && d[p] <= extents[i][1];
           }) ? null : "none";
         });
-      }
+      }*/
     </script>
   </body>
 </html>
