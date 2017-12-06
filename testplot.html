@@ -1,0 +1,22 @@
+<!doctype HTML>
+<html>
+  <head>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body style='margin : 0px; overflow: hidden;'>
+    <script>
+      d3.csv("cars.csv", function(d) {
+        return {
+          name : d.name,
+          cylinders : +d.cylinders,
+          displacement = +d["displacement (cc)"],
+          power = +d["power (hp)"],
+          weight = +d["weight (lb)"],
+          "0-60" = +d["0-60 mph (s)"]
+        };
+      }, function(data){
+
+      })
+    </script>
+  </body>
+</html>
