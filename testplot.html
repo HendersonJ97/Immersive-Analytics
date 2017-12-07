@@ -14,7 +14,7 @@
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.csv("cars.csv", function(d) {
+    d3.text("cars.csv", function(d) {
         return{
           name: d.name,
           cylinders: +d.cylinders,
