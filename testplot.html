@@ -10,9 +10,8 @@
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    var background,
-        foreground;
 
+    var background;
     var foreground;
 
     var svg = d3.select("body").append("svg")
@@ -46,7 +45,7 @@
         });
         */
 
-          // test
+          //
 
       d3.csv("cars.csv", function(cars) {
         console.log("cars:", cars)
