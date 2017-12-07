@@ -1,45 +1,20 @@
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <link type="text/css" rel="stylesheet" href="style.css"/>
-    <style type="text/css">
+<meta charset="utf-8">
+<style>
 
 svg {
-  font-size: 14px;
+  font: 10px sans-serif;
+}
+
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
 }
 
 .foreground path {
   fill: none;
-  stroke-opacity: .5;
-  stroke-width: 1.5px;
-}
-
-.foreground path.fade {
-  stroke: #000;
-  stroke-opacity: .05;
-}
-
-.legend {
-  font-size: 18px;
-  font-style: oblique;
-}
-
-.legend line {
-  stroke-width: 2px;
-}
-
-.setosa {
-  stroke: #800;
-}
-
-.versicolor {
-  stroke: #080;
-}
-
-.virginica {
-  stroke: #008;
+  stroke: steelblue;
 }
 
 .brush .extent {
@@ -48,153 +23,145 @@ svg {
   shape-rendering: crispEdges;
 }
 
-.axis line, .axis path {
+.axis line,
+.axis path {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
 .axis text {
-  text-shadow: 0 1px 0 #fff;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
   cursor: move;
 }
 
-    </style>
-  </head>
-  <body>
-    <h2>
-      Edgar Anderson’s <i>Iris</i> data set<br>
-      parallel coordinates
-    </h2>
-    <script type="text/javascript" src="d3/d3.js"></script>
-    <script type="text/javascript" src="d3/d3.csv.js"></script>
-    <script type="text/javascript">
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
 
-var species = ["setosa", "versicolor", "virginica"],
-    traits = ["sepal length", "petal length", "sepal width", "petal width"];
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
-var m = [80, 160, 200, 160],
-    w = 1280 - m[1] - m[3],
-    h = 800 - m[0] - m[2];
-
-var x = d3.scale.ordinal().domain(traits).rangePoints([0, w]),
-    y = {};
+var x = d3.scale.ordinal().rangePoints([0, width], 1),
+    y = {},
+    dragging = {};
 
 var line = d3.svg.line(),
     axis = d3.svg.axis().orient("left"),
+    background,
     foreground;
 
-var svg = d3.select("body").append("svg:svg")
-    .attr("width", w + m[1] + m[3])
-    .attr("height", h + m[0] + m[2])
-  .append("svg:g")
-    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv("iris.csv", function(flowers) {
+d3.csv("cars.csv", function(error, cars) {
 
-  // Create a scale and brush for each trait.
-  traits.forEach(function(d) {
-    // Coerce values to numbers.
-    flowers.forEach(function(p) { p[d] = +p[d]; });
+  // Extract the list of dimensions and create a scale for each.
+  x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
+    return d != "name" && (y[d] = d3.scale.linear()
+        .domain(d3.extent(cars, function(p) { return +p[d]; }))
+        .range([height, 0]));
+  }));
 
-    y[d] = d3.scale.linear()
-        .domain(d3.extent(flowers, function(p) { return p[d]; }))
-        .range([h, 0]);
+  // Add grey background lines for context.
+  background = svg.append("g")
+      .attr("class", "background")
+    .selectAll("path")
+      .data(cars)
+    .enter().append("path")
+      .attr("d", path);
 
-    y[d].brush = d3.svg.brush()
-        .y(y[d])
-        .on("brush", brush);
- });
-
-  // Add a legend.
-  var legend = svg.selectAll("g.legend")
-      .data(species)
-    .enter().append("svg:g")
-      .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(0," + (i * 20 + 584) + ")"; });
-
-  legend.append("svg:line")
-      .attr("class", String)
-      .attr("x2", 8);
-
-  legend.append("svg:text")
-      .attr("x", 12)
-      .attr("dy", ".31em")
-      .text(function(d) { return "Iris " + d; });
-
-  // Add foreground lines.
-  foreground = svg.append("svg:g")
+  // Add blue foreground lines for focus.
+  foreground = svg.append("g")
       .attr("class", "foreground")
     .selectAll("path")
-      .data(flowers)
-    .enter().append("svg:path")
-      .attr("d", path)
-      .attr("class", function(d) { return d.species; });
+      .data(cars)
+    .enter().append("path")
+      .attr("d", path);
 
-  // Add a group element for each trait.
-  var g = svg.selectAll(".trait")
-      .data(traits)
-    .enter().append("svg:g")
-      .attr("class", "trait")
+  // Add a group element for each dimension.
+  var g = svg.selectAll(".dimension")
+      .data(dimensions)
+    .enter().append("g")
+      .attr("class", "dimension")
       .attr("transform", function(d) { return "translate(" + x(d) + ")"; })
       .call(d3.behavior.drag()
-      .origin(function(d) { return {x: x(d)}; })
-      .on("dragstart", dragstart)
-      .on("drag", drag)
-      .on("dragend", dragend));
+        .origin(function(d) { return {x: x(d)}; })
+        .on("dragstart", function(d) {
+          dragging[d] = x(d);
+          background.attr("visibility", "hidden");
+        })
+        .on("drag", function(d) {
+          dragging[d] = Math.min(width, Math.max(0, d3.event.x));
+          foreground.attr("d", path);
+          dimensions.sort(function(a, b) { return position(a) - position(b); });
+          x.domain(dimensions);
+          g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
+        })
+        .on("dragend", function(d) {
+          delete dragging[d];
+          transition(d3.select(this)).attr("transform", "translate(" + x(d) + ")");
+          transition(foreground).attr("d", path);
+          background
+              .attr("d", path)
+            .transition()
+              .delay(500)
+              .duration(0)
+              .attr("visibility", null);
+        }));
 
   // Add an axis and title.
-  g.append("svg:g")
+  g.append("g")
       .attr("class", "axis")
       .each(function(d) { d3.select(this).call(axis.scale(y[d])); })
-    .append("svg:text")
-      .attr("text-anchor", "middle")
+    .append("text")
+      .style("text-anchor", "middle")
       .attr("y", -9)
-      .text(String);
+      .text(function(d) { return d; });
 
-  // Add a brush for each axis.
-  g.append("svg:g")
+  // Add and store a brush for each axis.
+  g.append("g")
       .attr("class", "brush")
-      .each(function(d) { d3.select(this).call(y[d].brush); })
+      .each(function(d) {
+        d3.select(this).call(y[d].brush = d3.svg.brush().y(y[d]).on("brushstart", brushstart).on("brush", brush));
+      })
     .selectAll("rect")
       .attr("x", -8)
       .attr("width", 16);
-
-  function dragstart(d) {
-    i = traits.indexOf(d);
-  }
-
-  function drag(d) {
-    x.range()[i] = d3.event.x;
-    traits.sort(function(a, b) { return x(a) - x(b); });
-    g.attr("transform", function(d) { return "translate(" + x(d) + ")"; });
-    foreground.attr("d", path);
-  }
-
-  function dragend(d) {
-    x.domain(traits).rangePoints([0, w]);
-    var t = d3.transition().duration(500);
-    t.selectAll(".trait").attr("transform", function(d) { return "translate(" + x(d) + ")"; });
-    t.selectAll(".foreground path").attr("d", path);
-  }
 });
+
+function position(d) {
+  var v = dragging[d];
+  return v == null ? x(d) : v;
+}
+
+function transition(g) {
+  return g.transition().duration(500);
+}
 
 // Returns the path for a given data point.
 function path(d) {
-  return line(traits.map(function(p) { return [x(p), y[p](d[p])]; }));
+  return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+}
+
+function brushstart() {
+  d3.event.sourceEvent.stopPropagation();
 }
 
 // Handles a brush event, toggling the display of foreground lines.
 function brush() {
-  var actives = traits.filter(function(p) { return !y[p].brush.empty(); }),
+  var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
       extents = actives.map(function(p) { return y[p].brush.extent(); });
-  foreground.classed("fade", function(d) {
-    return !actives.every(function(p, i) {
+  foreground.style("display", function(d) {
+    return actives.every(function(p, i) {
       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
-    });
+    }) ? null : "none";
   });
 }
 
-    </script>
-  </body>
-</html>
+</script>
