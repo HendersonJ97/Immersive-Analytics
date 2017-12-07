@@ -1,16 +1,50 @@
-<!doctype HTML>
-<html>
-  <head>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-  </head>
+<!DOCTYPE html>
+<meta charset="utf-8">
+  <style>
+
+  svg {
+    font: 10px sans-serif;
+  }
+
+  .background path {
+    fill: none;
+    stroke: #ddd;
+    shape-rendering: crispEdges;
+  }
+
+  .foreground path {
+    fill: none;
+    stroke: steelblue;
+  }
+
+  .brush .extent {
+    fill-opacity: .3;
+    stroke: #fff;
+    shape-rendering: crispEdges;
+  }
+
+  .axis line,
+  .axis path {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .axis text {
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    cursor: move;
+  }
+
+  </style>
   <body style='margin : 0px; overflow: hidden;'>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script>
 
     var margin = {top: 30, right: 10, bottom: 10, left: 10},
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    var line = d3.svg.line();
+    var line = d3.line();
     var background, foreground;
 
     var svg = d3.select("body").append("svg")
