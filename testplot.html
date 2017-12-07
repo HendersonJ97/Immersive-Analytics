@@ -44,6 +44,10 @@
         width = 960 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
+    var x = d3.scale.ordinal().rangePoints([0, width], 1),
+        y = {},
+        dragging = {};
+
     var line = d3.line();
     var background, foreground;
 
@@ -102,6 +106,13 @@
           }
         })
         console.log("data", data)
+
+        // Extract the list of dimensions and create a scale for each.
+        x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
+          return d != "name" && (y[d] = d3.scale.linear()
+              .domain(d3.extent(cars, function(p) { return +p[d]; }))
+              .range([height, 0]));
+        }));
 
         foreground = svg.append("g")
         .attr("class", "foreground")
