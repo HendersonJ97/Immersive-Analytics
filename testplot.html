@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-  <style>
-
+<style>
   svg {
     font: 10px sans-serif;
   }
@@ -34,79 +33,60 @@
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
     cursor: move;
   }
+</style>
 
-  </style>
-  <body style='margin : 0px; overflow: hidden;'>
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script>
-
-    var margin = {top: 30, right: 10, bottom: 10, left: 10},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+<body style='margin : 0px; overflow: hidden;'>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script>
+    var margin = {
+        top: 30,
+        right: 10,
+        bottom: 10,
+        left: 10
+      },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal().rangePoints([0, width], 1),
-        y = {},
-        dragging = {};
+      y = {},
+      dragging = {};
 
     var line = d3.svg.line();
     var background, foreground;
 
     var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-/*
-    d3.text("cars.csv", function(d) {
-        return{
-          name: d.name,
-          cylinders: +d.cylinders,
-          displacement: +d["displacement (cc)"],
-          power: +d["power (hp)"],
-          weight: +d["weight (lb)"],
-          speed: +d["0-60 mph (s)"],
-          year: +d.year
-        };
-      }, function(error, rows) {
+    d3.csv("cars.csv", function(cars) {
+      console.log("cars:", cars)
+      data = cars.map(function(d) {
+        console.log("d", d)
+        name = d.name
+        cylinders = +d.cylinders
+        displacement = +d["displacement (cc)"]
+        power = +d["power (hp)"]
+        weight = +d["weight (lb)"]
+        speed = +d["0-60 mph (s)"]
+        year = +d.year
+        return {
+          "name": d.name,
+          "cylinders": +d.cylinders,
+          "displacement": +d["displacement (cc)"],
+          "power": +d["power (hp)"],
+          "weight": +d["weight (lb)"],
+          "speed": +d["0-60 mph (s)"],
+          "year": +d.year
+        }
+      })
+      console.log("data", data)
+      data.forEach(function(d) {
 
+      })
 
-          foreground = svg.append("g")
-          .attr("class", "foreground")
-          .selectAll("path")
-          .data(cars)
-          .enter().append("path")
-          .attr("d", path);
-
-
-        });
-        */
-
-          //
-
-      d3.csv("cars.csv", function(cars) {
-        console.log("cars:", cars)
-        data = cars.map(function(d) {
-          console.log("d", d)
-          name = d.name
-          cylinders = +d.cylinders
-          displacement = +d["displacement (cc)"]
-          power = +d["power (hp)"]
-          weight = +d["weight (lb)"]
-          speed = +d["0-60 mph (s)"]
-          year = +d.year
-          return {
-            "name": d.name,
-            "cylinders": +d.cylinders,
-            "displacement": +d["displacement (cc)"],
-            "power": +d["power (hp)"],
-            "weight": +d["weight (lb)"],
-            "speed": +d["0-60 mph (s)"],
-            "year": +d.year
-          }
-        })
-        console.log("data", data)
-
+      /*
         // Extract the list of dimensions and create a scale for each.
         x.domain(dimensions = d3.keys(cars[0]).filter(function(d) {
           return d != "name" && (y[d] = d3.scale.linear()
@@ -131,6 +111,10 @@
         var v = dragging[d];
         return v == null ? x(d) : v;
       }
-    </script>
-  </body>
+      */
+
+    })
+  </script>
+</body>
+
 </html>
