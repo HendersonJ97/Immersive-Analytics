@@ -64,26 +64,6 @@
     var scene = d3.select("a-scene");
 
     d3.csv("cars.csv", function(cars) {
-    console.log("cars:", cars)
-    data = cars.map(function(d) {
-      console.log("d", d)
-      name = d.name
-      cylinders = +d.cylinders
-      displacement = +d["displacement (cc)"]
-      power = +d["power (hp)"]
-      weight = +d["weight (lb)"]
-      speed = +d["0-60 mph (s)"]
-      year = +d.year
-      return {
-        "name": d.name,
-        "cylinders": +d.cylinders,
-        "displacement": +d["displacement (cc)"],
-        "power": +d["power (hp)"],
-        "weight": +d["weight (lb)"],
-        "speed": +d["0-60 mph (s)"],
-        "year": +d.year
-      }
-    })
 
     x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
       .filter(function(column_name) {
@@ -94,16 +74,8 @@
           .range([height, 0]))
       }));
 
-    /*foreground = svg.append("g")
-      .attr("class", "foreground")
-      .selectAll("path")
-      .data(cars)
-      .enter().append("path")
-      .attr("d", path);
-*/
-
     var lines = scene.selectAll("a-entity")
-      .data(data)
+      .data(cars)
       .enter()
       .append("a-entity")
       .each(function(datum, index) {
@@ -121,12 +93,6 @@
       })
 
     })
-    /*// Returns the path for a given data point.
-    function path(d) {
-      return line(dimensions.map(function(column_name) {
-        return [x(column_name), y[column_name](d[column_name])];
-      }));
-    }*/
   </script>
   <a-scene></a-scene>
 </body>
