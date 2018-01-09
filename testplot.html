@@ -37,6 +37,7 @@
 
 <body style='margin : 0px; overflow: hidden;'>
   <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
   <script>
     var margin = {
         top: 30,
@@ -86,7 +87,9 @@
 
     })
   </script>
-  <a-scene></a-scene>
+  <a-scene>
+    <a-entity camera></a-entity>
+  </a-scene>
 </body>
 
 </html>
