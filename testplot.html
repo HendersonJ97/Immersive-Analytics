@@ -64,69 +64,78 @@
     var scene = d3.select("a-scene");
 
     d3.csv("cars.csv", function(cars) {
-      console.log("cars:", cars)
-      data = cars.map(function(d) {
-        console.log("d", d)
-        name = d.name
-        cylinders = +d.cylinders
-        displacement = +d["displacement (cc)"]
-        power = +d["power (hp)"]
-        weight = +d["weight (lb)"]
-        speed = +d["0-60 mph (s)"]
-        year = +d.year
-        return {
-          "name": d.name,
-          "cylinders": +d.cylinders,
-          "displacement": +d["displacement (cc)"],
-          "power": +d["power (hp)"],
-          "weight": +d["weight (lb)"],
-          "speed": +d["0-60 mph (s)"],
-          "year": +d.year
-        }
-      })
+    console.log("cars:", cars)
+    data = cars.map(function(d) {
+      console.log("d", d)
+      name = d.name
+      cylinders = +d.cylinders
+      displacement = +d["displacement (cc)"]
+      power = +d["power (hp)"]
+      weight = +d["weight (lb)"]
+      speed = +d["0-60 mph (s)"]
+      year = +d.year
+      return {
+        "name": d.name,
+        "cylinders": +d.cylinders,
+        "displacement": +d["displacement (cc)"],
+        "power": +d["power (hp)"],
+        "weight": +d["weight (lb)"],
+        "speed": +d["0-60 mph (s)"],
+        "year": +d.year
+      }
+    })
 
-      x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
-        .filter(function(column_name) {
-          return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
-            .domain(d3.extent(cars, function(max_values) { // create scale from max column values
-              return +max_values[column_name]
-            }))
-            .range([height, 0]))
-        }));
+    x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
+      .filter(function(column_name) {
+        return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
+          .domain(d3.extent(cars, function(max_values) { // create scale from max column values
+            return +max_values[column_name]
+          }))
+          .range([height, 0]))
+      }));
 
-      var coords = dimensions.map(function(column_name) { return [x(column_name), y[column_name](d[column_name])]; });
-      console.log("coords", coords);
+    var coords = dimensions.map(function(column_name) {
+      return [x(column_name), y[column_name](d[column_name])];
+    });
+    console.log("coords", coords);
 
-      foreground = svg.append("g")
+    foreground = svg.append("g")
       .attr("class", "foreground")
       .selectAll("path")
       .data(cars)
       .enter().append("path")
       .attr("d", path);
 
-/*
-      var lines = scene.selectAll("a-entity")
-       .data(data)
-       .enter()
-       .append("a-entity")
-        .each(function(d) {
-          // Select itself
-          var entity = d3.select(this);
-          var coordinates = dimensions.map(function(column_name) { return [x(column_name), y[column_name](d[column_name])]; });
-          // Loop for each dimension
-          for (i = 0; i < coordinates.length - 1; i++) {
-            entity.attr("line__" + (i + 1), "start: ")
-          }
-          })
-        })
-*/
+
+    var lines = scene.selectAll("a-entity")
+      .data(data)
+      .enter()
+      .append("a-entity")
+      .each(function(d) {
+        // Select itself
+        var entity = d3.select(this);
+        var coordinates = dimensions.map(function(column_name) {
+          return [x(column_name), y[column_name](d[column_name])];
+        });
+        // Loop for each dimension
+        for (i = 0; i < coordinates.length - 1; i++) {
+          entity.attr("line__" + (i + 1), "start: " + coordinates[i][0] + " " + coordinates[i][1] +
+            " 0; end: " + coordinates[i + 1][0] + " " + coordinates[i + 1][1] +
+            " 0; color: red");
+        }
+      })
+    })
+
 
     })
     // Returns the path for a given data point.
     function path(d) {
-      return line(dimensions.map(function(column_name) { return [x(column_name), y[column_name](d[column_name])]; }));
+      return line(dimensions.map(function(column_name) {
+        return [x(column_name), y[column_name](d[column_name])];
+      }));
     }
   </script>
+  <a-scene></a-scene>
 </body>
 
 </html>
