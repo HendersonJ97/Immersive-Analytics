@@ -47,7 +47,8 @@
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    var x = d3.scale.ordinal().rangePoints([0, width], 1),
+    var x = d3.scale.ordinal()
+      .rangePoints([0, width], 1),
       y = {},
       dragging = {};
 
@@ -81,10 +82,28 @@
           "year": +d.year
         }
       })
-      console.log("data", data)
+
+      var dimensions = d3.keys(cars[0]) // get column names
+        .filter(function(column_name) {
+          return column_name != "name" && (y[column_name] = d3.scale.liner() // Discard names
+            .domain(d3.extent(cars, function(max_values) { // create scale from max column values
+              return +max_values[column_name]
+            }))
+            .range([height, 0]))
+        });
+      x.domain(dimensions);
+
+      foreground = svg.append("g")
+      .attr("class", "foreground")
+      .selectAll("path")
+      .data(cars)
+      .enter().append("path")
+      .attr("d", path);
+
+      /*console.log("data", data)
       data.forEach(function(d) {
 
-      })
+      })*/
 
       /*
         // Extract the list of dimensions and create a scale for each.
