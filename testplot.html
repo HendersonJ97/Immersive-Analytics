@@ -85,7 +85,7 @@
 
       var dimensions = d3.keys(cars[0]) // get column names
         .filter(function(column_name) {
-          return column_name != "name" && (y[column_name] = d3.scale.liner() // Discard names
+          return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
             .domain(d3.extent(cars, function(max_values) { // create scale from max column values
               return +max_values[column_name]
             }))
