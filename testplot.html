@@ -94,11 +94,6 @@
           .range([height, 0]))
       }));
 
-    var coords = dimensions.map(function(column_name) {
-      return [x(column_name), y[column_name](d[column_name])];
-    });
-    console.log("coords", coords);
-
     /*foreground = svg.append("g")
       .attr("class", "foreground")
       .selectAll("path")
