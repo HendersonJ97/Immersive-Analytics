@@ -83,15 +83,14 @@
         }
       })
 
-      var dimensions = d3.keys(cars[0]) // get column names
+      x.domain(dimensions = d3.keys(cars[0]) // get column names
         .filter(function(column_name) {
           return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
             .domain(d3.extent(cars, function(max_values) { // create scale from max column values
               return +max_values[column_name]
             }))
             .range([height, 0]))
-        });
-      x.domain(dimensions);
+        }));
 
       foreground = svg.append("g")
       .attr("class", "foreground")
