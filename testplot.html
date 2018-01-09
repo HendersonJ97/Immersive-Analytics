@@ -96,6 +96,7 @@
 
       var coords = dimensions.map(function(column_name) { return [x(column_name), y[column_name](d[column_name])]; });
       console.log("coords", coords);
+
       foreground = svg.append("g")
       .attr("class", "foreground")
       .selectAll("path")
@@ -118,9 +119,9 @@
           }
           })
         })
+*/
 
     })
-*/
     // Returns the path for a given data point.
     function path(d) {
       return line(dimensions.map(function(column_name) { return [x(column_name), y[column_name](d[column_name])]; }));
