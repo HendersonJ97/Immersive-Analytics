@@ -111,11 +111,11 @@
       .data(data)
       .enter()
       .append("a-entity")
-      .each(function(d) {
+      .each(function(datum, index) {
         // Select itself
         var entity = d3.select(this);
         var coordinates = dimensions.map(function(column_name) {
-          return [x(column_name), y[column_name](d[column_name])];
+          return [x(column_name), y[column_name](datum[column_name])];
         });
         // Loop for each dimension
         for (i = 0; i < coordinates.length - 1; i++) {
