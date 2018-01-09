@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+
 <head>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
 </head>
+
 <body style='margin : 0px; overflow: hidden;'>
 
   <script>
@@ -51,6 +53,7 @@
             var value = "start: " + coordinates[i][0] + " " + coordinates[i][1] +
               " 0; end: " + coordinates[i + 1][0] + " " + coordinates[i + 1][1] +
               " 0; color: red";
+            console.log("lines", value);
             entity.attr("line__" + (i + 1), value);
           }
         })
@@ -58,7 +61,9 @@
     })
   </script>
   <a-scene>
-    <a-entity camera></a-entity>
+    <a-camera look-controls wasd-controls='easing:10'></a-camera>
+    <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
   </a-scene>
 </body>
+
 </html>
