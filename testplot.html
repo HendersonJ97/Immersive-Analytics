@@ -55,14 +55,6 @@
     var line = d3.svg.line();
     var background, foreground;
 
-    /*var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
-
-    var scene = d3.select("a-scene");
-
     d3.csv("cars.csv", function(cars) {
 
       x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
@@ -74,7 +66,7 @@
             .range([height, 0]))
         }));
       scene.append("a-camera");
-      var lines = scene.selectAll("a-entity")
+      var lines = d3.select("a-scene").selectAll("a-entity")
         .data(cars)
         .enter()
         .append("a-entity")
