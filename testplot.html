@@ -4,7 +4,7 @@
 <head>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-  <script src="https://raw.githubusercontent.com/cemkod/aframe-fps-look-component/master/dist/aframe-example-component.min.js"></script>
+  <script src="https://raw.githubusercontent.com/alexrkass/aframe-no-click-look-controls/master/dist/aframe-no-click-look-controls.min.js"></script>
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
@@ -45,13 +45,13 @@
           var coordinates = dimensions.map(function(column_name) {
             return [x(column_name), y[column_name](datum[column_name])];
           });
-          console.log("coords", coordinates);
+          //console.log("coords", coordinates);
           // Loop for each dimension
           for (i = 0; i < coordinates.length - 1; i++) {
             var value = "start: " + offsetx + " " + coordinates[i][1] + " " + (coordinates[i][0] + offsetz) +
               "; end: " + offsetx + " " + coordinates[i + 1][1] + " " + (coordinates[i + 1][0] + offsetz) +
               "; color: red";
-            console.log("lines", value);
+            //console.log("lines", value);
             entity.attr("line__" + (i + 1), value);
           }
         })
