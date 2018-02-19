@@ -47,7 +47,9 @@
       .each(function(datum, index) {
         // Select itself
         var entity = d3.select(this);
-        //var boundaries = d3.extent(cars[datum]);
+        var boundaries = d3.extent(cars, function(max_values) {
+          return +max_values[datum];
+        });
 
         console.log("Creating axis at x=" + xScale(index) + " using " + index + " for " + datum);
         //console.log("Bounardies: " + boundaries);
