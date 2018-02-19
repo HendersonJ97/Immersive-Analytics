@@ -106,8 +106,8 @@
     function generateLines(sector) {
       // eg section 1: axes 1 to 2
       // Retrieve axes of section
-      var leftAxis = d3.select("a-scene").select("a-axis[positionorder=" + sector + "]");
-      var rightAxis = d3.select("a-scene").select("a-axis[positionorder=" + (sector + 1) + "]");
+      var leftAxis = d3.select("a-scene").select("a-axis[positionorder='" + sector + "']");
+      var rightAxis = d3.select("a-scene").select("a-axis[positionorder='" + (sector + 1) + "']");
 
       // Check if at right edge
       if (!rightAxis) {
@@ -117,16 +117,16 @@
 
       // Generate y-scale for left axis
       var leftYScale = d3.scale.linear();
-      leftYScale.domain([leftAxis.attr("minValue"), leftAxis.attr("maxValue")]);
+      leftYScale.domain([leftAxis.attr("minvalue"), leftAxis.attr("maxvalue")]);
       leftYScale.range([leftAxis.attr("height"), 0]);
 
       // Generate y-scale for right axis
       var rightYScale = d3.scale.linear();
-      rightYScale.domain([rightAxis.attr("minValue"), rightAxis.attr("maxValue")]);
+      rightYScale.domain([rightAxis.attr("minvalue"), rightAxis.attr("maxvalue")]);
       rightYScale.range([rightAxis.attr("height"), 0]);
 
       // Remove old lines
-      d3.select("a-scene").selectAll("a-datum[sector=" + sector + "]").remove();
+      d3.select("a-scene").selectAll("a-datum[sector=''" + sector + "'']").remove();
 
       // Generate new Lines
       d3.select("a-scene").selectAll("a-datum")
@@ -137,12 +137,12 @@
         // Select itself
         var entity = d3.select(this);
         // offsetx(from axes) + scale(datum[sector]) + offsetz(from axes)
-        var firstCoord = leftAxis.attr("positionX") + " " + leftYScale(datum[sector]) + " " + leftAxis.attr("positionZ");
-        var secondCoord = rightAxis.attr("positionX") + " " + rightYScale(datum[sector+1]) + " " + rightAxis.attr("positionZ");
+        var firstCoord = leftAxis.attr("positionx") + " " + leftYScale(datum[sector]) + " " + leftAxis.attr("positionz");
+        var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(datum[sector+1]) + " " + rightAxis.attr("positionz");
 
         // Set attributes
-        entity.attr("firstCoord", firstCoord);
-        entity.attr("secondCoord", secondCoord);
+        entity.attr("firstcoord", firstCoord);
+        entity.attr("secondcoord", secondCoord);
         entity.attr("sector", sector);
       });
     }
@@ -199,16 +199,16 @@
         if (data.positionX !== oldData.positionX ||
             data.positionZ !== oldData.positionZ) {
               // Check for overlap
-              var prevAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (data.positionOrder - 1) + "]");
-              var nextAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (data.positionOrder + 1) + "]");
+              var prevAxis = d3.select("a-scene").select("a-axis[positionorder=''" + (data.positionOrder - 1) + "'']");
+              var nextAxis = d3.select("a-scene").select("a-axis[positionorder=''" + (data.positionOrder + 1) + "'']");
 
               // Check if at ends
               if (prevAxis){
                 // Check if before previous axis (moving up in the list)
-                if (data.positionX < prevAxis.attr("positionX") ||
-                    data.positionY < prevAxis.attr("positionY")) {
+                if (data.positionX < prevAxis.attr("positionx") ||
+                    data.positionY < prevAxis.attr("positiony")) {
                       // Swap prevAxis' positionOrder
-                      prevAxis.attr("positionOrder", data.positionOrder);
+                      prevAxis.attr("positionorder", data.positionOrder);
                       // Decrement own positionOrder
                       data.positionOrder--;
 
@@ -234,10 +234,10 @@
                     }
               } else if (nextAxis) {
                 // Check if after next axis
-                if (data.positionX > nextAxis.attr("positionX") ||
-                    data.positionY > nextAxis.attr("positionY")) {
+                if (data.positionX > nextAxis.attr("positionx") ||
+                    data.positionY > nextAxis.attr("positiony")) {
                       // Swap prevAxis' positionOrder
-                      nextAxis.attr("positionOrder", data.positionOrder);
+                      nextAxis.attr("positionorder", data.positionOrder);
                       // Increment own positionOrder
                       data.positionOrder++;
 
