@@ -48,12 +48,12 @@
 
         // Set attributes
         entity.attr("name", datum);
-        entity.attr("positionOrder", index);
-        entity.attr("positionX", xScale[datum]);
-        entity.attr("positionZ", zOffset);
+        entity.attr("positionorder", index);
+        entity.attr("positionx", xScale[datum]);
+        entity.attr("positionz", zOffset);
         entity.attr("height", height);
-        entity.attr("minValue", boundaries[0]);
-        entity.attr("maxValue", boundaries[1]);
+        entity.attr("minvalue", boundaries[0]);
+        entity.attr("maxvalue", boundaries[1]);
       });
 
       // Generate Lines
@@ -106,8 +106,8 @@
     function generateLines(sector) {
       // eg section 1: axes 1 to 2
       // Retrieve axes of section
-      var leftAxis = d3.select("a-scene").select("a-axis[positionOrder=" + sector + "]");
-      var rightAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (sector + 1) + "]");
+      var leftAxis = d3.select("a-scene").select("a-axis[positionorder=" + sector + "]");
+      var rightAxis = d3.select("a-scene").select("a-axis[positionorder=" + (sector + 1) + "]");
 
       // Check if at right edge
       if (!rightAxis) {
@@ -367,12 +367,12 @@
       mappings: {
         colour: 'axis.colour',
         name: 'axis.name',
-        positionOrder: 'axis.positionOrder',
-        positionX: 'axis.positionX',
-        positionZ: 'axis.positionZ',
+        positionorder: 'axis.positionOrder',
+        positionx: 'axis.positionX',
+        positionz: 'axis.positionZ',
         height: 'axis.height',
-        maxValue: 'axis.maxValue',
-        minValue: 'axis.minValue',
+        maxvalue: 'axis.maxValue',
+        minvalue: 'axis.minValue',
         thickness: 'axis.thickness'
       }
     })
@@ -387,8 +387,8 @@
         colour: 'datum.colour',
         sector: 'datum.sector',
         thickness: 'datum.thickess',
-        firstCoord: 'datum.firstCoord',
-        secondCoord: 'datum.secondCoord'
+        firstcoord: 'datum.firstCoord',
+        secondcoord: 'datum.secondCoord'
       }
     })
   </script>
