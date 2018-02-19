@@ -48,6 +48,9 @@
         var entity = d3.select(this);
         var boundaries = d3.extent(cars[index+1]);
 
+        console.log("Creating axis at x=" + xScale[datum] + " using " + datum);
+        console.log("Bounardies: " + boundaries[0] + " " + boundaries[1]);
+
         // Set attributes
         entity.attr("name", datum);
         entity.attr("positionorder", index);
@@ -138,6 +141,9 @@
         // offsetx(from axes) + scale(datum[sector]) + offsetz(from axes)
         var firstCoord = leftAxis.attr("positionx") + " " + leftYScale(datum[sector]) + " " + leftAxis.attr("positionz");
         var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(datum[sector+1]) + " " + rightAxis.attr("positionz");
+
+        console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + second coord);
+        console.log("Sector: " + sector);
 
         // Set attributes
         entity.attr("firstcoord", firstCoord);
