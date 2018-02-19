@@ -126,7 +126,7 @@
       rightYScale.range([rightAxis.attr("height"), 0]);
 
       // Remove old lines
-      d3.select("a-scene").selectAll("a-datum[sector=''" + sector + "'']").remove();
+      d3.select("a-scene").selectAll("a-datum[sector=" + sector + "']").remove();
 
       // Generate new Lines
       d3.select("a-scene").selectAll("a-datum")
@@ -199,8 +199,8 @@
         if (data.positionX !== oldData.positionX ||
             data.positionZ !== oldData.positionZ) {
               // Check for overlap
-              var prevAxis = d3.select("a-scene").select("a-axis[positionorder=''" + (data.positionOrder - 1) + "'']");
-              var nextAxis = d3.select("a-scene").select("a-axis[positionorder=''" + (data.positionOrder + 1) + "'']");
+              var prevAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder - 1) + "']");
+              var nextAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder + 1) + "']");
 
               // Check if at ends
               if (prevAxis){
