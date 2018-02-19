@@ -126,7 +126,7 @@
       rightYScale.range([rightAxis.attr("height"), 0]);
 
       // Remove old lines
-      d3.select("a-scene").selectAll("a-datum[sector=" + sector + "']").remove();
+      d3.select("a-scene").selectAll("a-datum[sector='" + sector + "']").remove();
 
       // Generate new Lines
       d3.select("a-scene").selectAll("a-datum")
