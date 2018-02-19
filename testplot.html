@@ -26,6 +26,8 @@
     var zOffset = 0;
 
     d3.csv("cars.csv", function(cars) {
+      // Store data
+      csvData = cars.slice(1);
       // Generate axes
       // Delete old axis (if they exist)
       d3.select("a-scene").selectAll("a-datum").remove();
@@ -60,9 +62,6 @@
       for (i = 0; i < names.length - 2; i++) {
         generateLines(i);
       }
-
-      // Store data
-      csvData = cars.slice(1);
 /*
       x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
         .filter(function(column_name) {
