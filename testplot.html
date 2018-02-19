@@ -51,8 +51,10 @@
 
         console.log("Creating axis at x=" + xScale(index) + " using " + index + " for " + datum);
         console.log("Bounardies: " + boundaries);
-        console.log("cars[datum][0]: " + csvData[0][0]);
-        console.log("cars[datum][1]: " + csvData[0][1]);
+        console.log("csvData[index]: " + csvData[index]);
+        console.log("csvData[index][1]: " + csvData[index][1]);
+        console.log("csvData[datum]: " + csvData[datum]);
+        console.log("csvData[datum][1]: " + csvData[datum][1]);
 
         // Set attributes
         entity.attr("name", datum);
