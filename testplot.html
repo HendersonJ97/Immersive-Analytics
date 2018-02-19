@@ -46,12 +46,12 @@
       .each(function(datum, index) {
         // Select itself
         var entity = d3.select(this);
-        var boundaries = d3.extent(cars[index+1]);
+        var boundaries = d3.extent(cars[datum]);
 
         console.log("Creating axis at x=" + xScale(index) + " using " + index + " for " + datum);
         console.log("Bounardies: " + boundaries);
-        console.log("cars[index+1][0]: " + cars[index+1][0]);
-        console.log("cars[index+1][1]: " + cars[index+1][1]);
+        console.log("cars[datum][0]: " + cars[datum][0]);
+        console.log("cars[datum][1]: " + cars[datum][1]);
 
         // Set attributes
         entity.attr("name", datum);
