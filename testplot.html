@@ -356,7 +356,7 @@
       remove: function () {
         this.el.removeObject3D('line', this.line);
       }
-    });
+    })
 
     AFRAME.registerPrimitive('a-axis', {
       // Attaches 'axis' to 'a-axis'
@@ -375,7 +375,7 @@
         minValue: 'axis.minValue',
         thickness: 'axis.thickness'
       }
-    });
+    })
 
     AFRAME.registerPrimitive('a-datum', {
       // Attaches 'axis' to 'a-axis'
@@ -390,7 +390,7 @@
         firstCoord: 'datum.firstCoord',
         secondCoord: 'datum.secondCoord'
       }
-    });
+    })
   </script>
   <a-scene>
     <a-camera look-controls wasd-controls='easing:10'>
