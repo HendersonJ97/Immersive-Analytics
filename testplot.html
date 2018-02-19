@@ -147,6 +147,11 @@
       });
     }
 
+    function isEqualVec3(a, b) {
+      if (!a || !b) {return false;}
+      return (a.x === b.x && a.y === b.y && a.z === b.z);
+    }
+
     /**
       Represents one axis
     */
@@ -350,11 +355,6 @@
 
       remove: function () {
         this.el.removeObject3D('line', this.line);
-      },
-
-      function isEqualVec3(a, b) {
-        if (!a || !b) {return false;}
-        return (a.x === b.x && a.y === b.y && a.z === b.z);
       }
     });
 
