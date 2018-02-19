@@ -20,11 +20,50 @@
     var line = d3.svg.line();
     var background, foreground;
 
+    var csvData;
+
     var offsetx = 500;
-    var offsetz = 0;
+    var zOffset = 0;
 
     d3.csv("cars.csv", function(cars) {
+      // Generate axes
+      // Delete old axis (if they exist)
+      d3.select("a-scene").selectAll("a-datum").remove();
+      // Generate column position scale
+      var names = d3.keys(cars[0]).filter(function(column_name) {
+        return column_name != "name";
+      })
+      var xScale =  d3.scale.ordinal();
+      xScale.rangePoints([0, width], 1);
+      xScale.domain(dimensions)
 
+      d3.select("a-scene").selectAll("a-axis")
+      .data(dimensions)
+      .enter()
+      .append("a-axis")
+      .each(function(datum, index) {
+        // Select itself
+        var entity = d3.select(this);
+        var boundaries = d3.extent(cars[index+1]);
+
+        // Set attributes
+        entity.attr("name", datum);
+        entity.attr("positionOrder", index);
+        entity.attr("positionX", xScale[datum]);
+        entity.attr("positionZ", zOffset);
+        entity.attr("height", height);
+        entity.attr("minValue", boundaries[0]);
+        entity.attr("maxValue", boundaries[1]);
+      });
+
+      // Generate Lines
+      for (int i = 0; i < dimensions.length - 2; i++) {
+        generateLines(i);
+      }
+
+      // Store data
+      csvData = cars.slice(1);
+/*
       x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
         .filter(function(column_name) {
           return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
@@ -32,8 +71,8 @@
               return +max_values[column_name]
             }))
             .range([height, 0]))
-        }));
-
+        }));*/
+/*
       var lines = d3.select("a-scene").selectAll("a-entity")
         .data(cars)
         .enter()
@@ -54,29 +93,302 @@
             entity.attr("line__" + (i + 1), value);
           }
         })
-
+*/
+/*
         var plane = d3.select("a-scene")
           .append("a-plane")
           .attr("position", offsetx + " " + 0 + " " + x(dimensions[0]))
           .attr("height", height)
           .attr("width", width);
-
+*/
     })
 
-    AFRAME.registerComponent('drag-selection', {
-      init: function() {
-        var downPosition = new THREE.Vector3();
-        var upPosition = new THREE.Vector3();
-        this.el.addEventListener('mousedown', function(evt) {
-          console.log(evt.detail.intersection);
-          downPosition = evt.detail.intersection.point;
-          console.log("down", downPosition);
+    function generateLines(sector) {
+      // eg section 1: axes 1 to 2
+      // Retrieve axes of section
+      var leftAxis = d3.select("a-scene").select("a-axis[positionOrder=" + sector + "]");
+      var rightAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (sector + 1) + "]");
+
+      // Check if at right edge
+      if (!rightAxis) {
+        // No section here
+        return 0;
+      }
+
+      // Generate y-scale for left axis
+      var leftYScale = d3.scale.linear();
+      leftYScale.domain([leftAxis.attr("minValue"), leftAxis.attr("maxValue")]);
+      leftYScale.range([leftAxis.attr("height"), 0]);
+
+      // Generate y-scale for right axis
+      var rightYScale = d3.scale.linear();
+      rightYScale.domain([rightAxis.attr("minValue"), rightAxis.attr("maxValue")]);
+      rightYScale.range([rightAxis.attr("height"), 0]);
+
+      // Remove old lines
+      d3.select("a-scene").selectAll("a-datum[sector=" + sector + "]").remove();
+
+      // Generate new Lines
+      d3.select("a-scene").selectAll("a-datum")
+      .data(csvData)
+      .enter()
+      .append("a-datum")
+      .each(function(datum, index) {
+        // Select itself
+        var entity = d3.select(this);
+        // offsetx(from axes) + scale(datum[sector]) + offsetz(from axes)
+        var firstCoord = leftAxis.attr("positionX") + " " + leftYScale(datum[sector]) + " " + leftAxis.attr("positionZ");
+        var secondCoord = rightAxis.attr("positionX") + " " + rightYScale(datum[sector+1]) + " " + rightAxis.attr("positionZ");
+
+        // Set attributes
+        entity.attr("firstCoord", firstCoord);
+        entity.attr("secondCoord", secondCoord);
+        entity.attr("sector", sector);
+      });
+    }
+
+    /**
+      Represents one axis
+    */
+    AFRAME.registerComponent('axis', {
+      schema: {
+        colour: {default: '#FFF'},
+        name: {type: 'string', default: ''},
+        positionOrder: {type: 'int', default: 1},
+        positionX: {type: 'number', default: 1},
+        positionZ: {type: 'number', default: 1},
+        height: {type: 'number', default: height},
+        maxValue: {type: 'number', default: height},
+        minValue: {type: 'number', default: 0},
+        thickness: {type: 'int', default: 1}
+      },
+
+      init: function () {
+        var data = this.data;
+        var geometry;
+        var material;
+
+        material = this.material = new THREE.LineBasicMaterial({
+          color: data.colour;
+          opacity: 1,
+          transparent: 0,
+          visible: true
         });
-        this.el.addEventListener('mouseup', function(evt) {
-          console.log(evt.detail.intersection);
-          upPosition = evt.detail.intersection.point;
-          console.log("up", upPosition);
+
+        geometry = this.geometry = new THREE.BufferGeometry();
+        geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
+
+        this.line = new THREE.Line(geometry, material);
+        this.el.setObject3D(this.attrName, this.line);
+      },
+
+      update: function (oldData) {
+        // On property update (and after init)
+        var data = this.data;   // Property values
+        var geometry = this.geometry;
+        var geoNeedsUpdate = false;
+        var material = this.material;
+        var positionArray = geometry.attributes.position.array;
+
+        // Geometry change
+        if (data.positionX !== oldData.positionX ||
+            data.positionZ !== oldData.positionZ) {
+              // Check for overlap
+              var prevAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (data.positionOrder - 1) + "]");
+              var nextAxis = d3.select("a-scene").select("a-axis[positionOrder=" + (data.positionOrder + 1) + "]");
+
+              // Check if at ends
+              if (prevAxis){
+                // Check if before previous axis (moving up in the list)
+                if (data.positionX < prevAxis.attr("positionX") ||
+                    data.positionY < prevAxis.attr("positionY")) {
+                      // Swap prevAxis' positionOrder
+                      prevAxis.attr("positionOrder", data.positionOrder);
+                      // Decrement own positionOrder
+                      data.positionOrder--;
+
+                      // Update the sectors around it
+                      if (data.positionOrder == csvData.length - 1) {
+                        // Far right moving in
+                        // Update sectors at length - 2, length - 3
+                        generateLines(csvData.length - 2);
+                        generateLines(csvData.length - 3);
+                      } else if (data.positionOrder == 1) {
+                        // positionOrder = 1
+                        // Update sectors 0, 1
+                        generateLines(0);
+                        generateLines(1);
+                      } else {
+                        // Middle section
+                        // Update 3 sectors
+                        // sectors (positionOrder - 1), positionOrder, (positionOrder + 1)
+                        for (int i = (positionOrder - 1); i < positionOrder + 2; i++){
+                          generateLines(i);
+                        }
+                      }
+                    }
+              } else (nextAxis) {
+                // Check if after next axis
+                if (data.positionX > nextAxis.attr("positionX") ||
+                    data.positionY > nextAxis.attr("positionY")) {
+                      // Swap prevAxis' positionOrder
+                      nextAxis.attr("positionOrder", data.positionOrder);
+                      // Increment own positionOrder
+                      data.positionOrder++;
+
+                      // Update the sectors around it
+                      if (data.positionOrder == 0) {
+                        // Far left moving in
+                        // Update sectors at 0, 1
+                        generateLines(0);
+                        generateLines(1);
+                      } else if (data.positionOrder == csvData.length - 2) {
+                        // Update sectors at csvData.length - 2, csvData.length - 3
+                        generateLines(csvData.length - 2);
+                        generateLines(csvData.length - 3);
+                      } else {
+                        // Middle section
+                        // Update 3 sectors
+                        // sectors (positionOrder - 1), positionOrder, (positionOrder + 1)
+                        for (int i = (positionOrder - 1); i < positionOrder + 2; i++){
+                          generateLines(i);
+                        }
+                      }
+                    }
+              }
+
+            // Reset mesh
+            positionArray[0] = data.positionX;
+            positionArray[1] = 0;
+            positionArray[2] = data.positionZ;
+            positionArray[3] = data.positionX;
+            positionArray[4] = data.height;
+            positionArray[5] = data.positionZ;
+            geoNeedsUpdate = true;
+        }
+
+        if (geoNeedsUpdate) {
+          geometry.attributes.needsUpdate = true;
+          geometry.computeBoundingSphere();
+        }
+
+        material.color.setStyle(data.colour);
+        material.opacity = 1;
+        material.transparent = 0;
+        material.visible = true;
+      },
+
+      remove: function () {
+        this.el.removeObject3D('line', this.line);
+      }
+    })
+
+    /**
+      Represents one axis
+    */
+    AFRAME.registerComponent('datum', {
+      schema: {
+        colour: {default: '#FFF'},
+        sector: {type: 'int', default = 0},
+        thickness: {type: 'int', default: 1},
+        firstCoord: {type: 'vec3', default: {x: 0, y: 0, z: 0},
+        secondCoord: {type: 'vec3', default: {x: 0, y: 0, z: 0}}
+      },
+
+      init: function () {
+        var data = this.data;
+        var geometry;
+        var material;
+
+        material = this.material = new THREE.LineBasicMaterial({
+          color: data.colour;
+          opacity: 1,
+          transparent: 0,
+          visible: true
         });
+
+        geometry = this.geometry = new THREE.BufferGeometry();
+        geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
+
+        this.line = new THREE.Line(geometry, material);
+        this.el.setObject3D(this.attrName, this.line);
+      },
+
+      update: function (oldData) {
+        // On property update (and after init)
+        var data = this.data;   // Property values
+        var geometry = this.geometry;
+        var geoNeedsUpdate = false;
+        var material = this.material;
+        var positionArray = geometry.attributes.position.array;
+
+        // Update Geometry
+        if (!isEqualVec3(data.firstCoord, oldData.firstCoord)) {
+          positionArray[0] = data.firstCoord.x;
+          positionArray[1] = data.firstCoord.y;
+          positionArray[2] = data.firstCoord.z;
+          geoNeedsUpdate = true;
+        }
+
+        if (!isEqualVec3(data.secondCoord, oldData.secondCoord)) {
+          positionArray[3] = data.secondCoord.x;
+          positionArray[4] = data.secondCoord.y;
+          positionArray[5] = data.secondCoord.z;
+          geoNeedsUpdate = true;
+        }
+
+        if (geoNeedsUpdate) {
+          geometry.attributes.needsUpdate = true;
+          geometry.computeBoundingSphere();
+        }
+
+        material.color.setStyle(data.colour);
+        material.opacity = 1;
+        material.transparent = 0;
+        material.visible = true;
+      },
+
+      remove: function () {
+        this.el.removeObject3D('line', this.line);
+      };
+
+      function isEqualVec3(a, b) {
+        if (!a || !b) {return false;}
+        return (a.x === b.x && a.y === b.y && a.z === b.z);
+      }
+    });
+
+    AFRAME.registerPrimitive('a-axis', {
+      // Attaches 'axis' to 'a-axis'
+      defaultComponents: {
+        axis: {}
+      },
+
+      mappings: {
+        colour: 'axis.colour',
+        name: 'axis.name',
+        positionOrder: 'axis.positionOrder',
+        positionX: 'axis.positionX',
+        positionZ: 'axis.positionZ',
+        height: 'axis.height',
+        maxValue: 'axis.maxValue',
+        minValue: 'axis.minValue',
+        thickness: 'axis.thickness'
+      }
+    });
+
+    AFRAME.registerPrimitive('a-datum', {
+      // Attaches 'axis' to 'a-axis'
+      defaultComponents: {
+        datum: {}
+      },
+
+      mappings: {
+        colour: 'datum.colour',
+        sector: 'datum.sector',
+        thickness: 'datum.thickess',
+        firstCoord: 'datum.firstCoord',
+        secondCoord: 'datum.secondCoord'
       }
     });
   </script>
