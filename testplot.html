@@ -35,9 +35,9 @@
       var names = d3.keys(cars[0]).filter(function(column_name) {
         return column_name != "name";
       })
-      var xScale =  d3.scale.ordinal();
-      xScale.rangePoints([0, width], 1);
-      xScale.domain(names);
+      var xScale =  d3.scale.linear();
+      xScale.range([0, width]);
+      xScale.domain([0, (names.length-1)]);
 
       d3.select("a-scene").selectAll("a-axis")
       .data(names)
