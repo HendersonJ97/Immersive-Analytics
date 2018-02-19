@@ -28,6 +28,7 @@
     d3.csv("cars.csv", function(cars) {
       // Store data
       csvData = cars.slice(1);
+      csvData.map(function(d) { return +d; });
       // Generate axes
       // Delete old axis (if they exist)
       d3.select("a-scene").selectAll("a-datum").remove();
@@ -46,10 +47,10 @@
       .each(function(datum, index) {
         // Select itself
         var entity = d3.select(this);
-        //var boundaries = d3.extent(cars[datum]);
+        var boundaries = d3.extent(csvData[index]);
 
         console.log("Creating axis at x=" + xScale(index) + " using " + index + " for " + datum);
-        //console.log("Bounardies: " + boundaries);
+        console.log("Bounardies: " + boundaries);
         console.log("cars[datum][0]: " + csvData[0][0]);
         console.log("cars[datum][1]: " + csvData[0][1]);
 
