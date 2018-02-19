@@ -35,10 +35,10 @@
       })
       var xScale =  d3.scale.ordinal();
       xScale.rangePoints([0, width], 1);
-      xScale.domain(dimensions)
+      xScale.domain(names);
 
       d3.select("a-scene").selectAll("a-axis")
-      .data(dimensions)
+      .data(names)
       .enter()
       .append("a-axis")
       .each(function(datum, index) {
@@ -57,7 +57,7 @@
       });
 
       // Generate Lines
-      for (i = 0; i < dimensions.length - 2; i++) {
+      for (i = 0; i < names.length - 2; i++) {
         generateLines(i);
       }
 
