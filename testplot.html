@@ -48,13 +48,13 @@
         var entity = d3.select(this);
         var boundaries = d3.extent(cars[index+1]);
 
-        console.log("Creating axis at x=" + xScale[index] + " using " + index);
+        console.log("Creating axis at x=" + xScale(index) + " using " + index);
         console.log("Bounardies: " + boundaries[0] + " " + boundaries[1]);
 
         // Set attributes
         entity.attr("name", datum);
         entity.attr("positionorder", index);
-        entity.attr("positionx", xScale[datum]);
+        entity.attr("positionx", xScale(datum));
         entity.attr("positionz", zOffset);
         entity.attr("height", height);
         entity.attr("minvalue", boundaries[0]);
