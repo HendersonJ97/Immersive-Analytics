@@ -142,16 +142,16 @@
         // Select itself
         var entity = d3.select(this);
         // offsetx(from axes) + scale(datum[sector]) + offsetz(from axes)
-        var firstCoord = leftAxis.attr("positionx") + " " + leftYScale(datum[sector]) + " " + leftAxis.attr("positionz");
-        var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(datum[sector+1]) + " " + rightAxis.attr("positionz");
+        var firstCoord = leftAxis.attr("positionx") + " " + leftYScale(leftAxis.attr("name")) + " " + leftAxis.attr("positionz");
+        var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(rightAxis.attr("name")) + " " + rightAxis.attr("positionz");
 
         console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + secondCoord);
         console.log("Sector: " + sector);
         console.log("datum: " + datum);
-        console.log("datum[sector]: " + datum[sector]);
-        console.log("datum[sector]: " + datum[sector+1]);
-        console.log("leftYScale(datum[sector]): " + leftYScale(datum[sector]));
-        console.log("rightYScale(datum[sector+1]): " + rightYScale(datum[sector]));
+        console.log("leftAxis name: " + leftAxis.attr("name"));
+        console.log("rightAxis name: " + rightAxis.attr("name"));
+        console.log("leftYScale(left name): " + leftYScale(leftAxis.attr("name")));
+        console.log("rightYScale(right name): " + rightYScale(leftAxis.attr("name")));
 
         // Set attributes
         entity.attr("firstcoord", firstCoord);
