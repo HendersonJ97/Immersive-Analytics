@@ -216,7 +216,7 @@
               var nextAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder + 1) + "']");
 
               // Check if at ends
-              if (prevAxis[0]){
+              if (prevAxis[0] !== null){
                 // Check if before previous axis (moving up in the list)
                 if (data.positionX < prevAxis.attr("positionx") ||
                     data.positionY < prevAxis.attr("positiony")) {
@@ -245,7 +245,7 @@
                         }
                       }
                     }
-              } else if (nextAxis[0]) {
+              } else if (nextAxis[0] !== null) {
                 // Check if after next axis
                 if (data.positionX > nextAxis.attr("positionx") ||
                     data.positionY > nextAxis.attr("positiony")) {
