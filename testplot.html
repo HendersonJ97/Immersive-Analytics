@@ -143,7 +143,7 @@
       console.log("Generating lines for sector: " + sector);
 
       // Generate new Lines
-      d3.select("a-scene").selectAll("a-datum[sector='" + sector + "']");
+      d3.select("a-scene").selectAll("a-datum[sector='" + sector + "']")
       .data(csvData)
       .enter()
       .append("a-datum")
