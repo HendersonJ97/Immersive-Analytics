@@ -416,10 +416,14 @@
     })
   </script>
   <a-scene>
+    <a-assets>
+      <img id="ground" src="ground.jpg">
+    </a-assets>
     <a-camera look-controls wasd-controls='easing:10'>
       <a-cursor></a-cursor>
     </a-camera>
     <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
+    <a-plane src="#ground" height="100" width="100" rotation="-90 0 0"></a-plane>
   </a-scene>
 </body>
 
