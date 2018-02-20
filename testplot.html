@@ -146,7 +146,7 @@
         var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(datum[rightAxis.attr("name")]) + " " + rightAxis.attr("positionz");
 
         console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + secondCoord);
-        console.log("Sector: " + sector);
+        console.log("Sector: " + parseInt(sector));
         console.log("datum: " + datum);
         console.log("datum[leftAxis name]: " + datum[leftAxis.attr("name")]);
         console.log("datum[rightAxis name]: " + datum[rightAxis.attr("name")]);
