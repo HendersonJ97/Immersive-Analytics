@@ -122,7 +122,7 @@
       var rightAxis = d3.select("a-scene").select("a-axis[positionorder='" + (sector + 1) + "']");
 
       // Check if at right edge
-      if (!rightAxis) {
+      if (rightAxis.empty()) {
         // No section here
         return 0;
       }
