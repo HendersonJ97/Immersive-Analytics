@@ -147,6 +147,11 @@
 
         console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + secondCoord);
         console.log("Sector: " + sector);
+        console.log("datum: " + datum);
+        console.log("datum[sector]: " + datum[sector]);
+        console.log("datum[sector]: " + datum[sector+1]);
+        console.log("leftYScale(datum[sector]): " + leftYScale(datum[sector]));
+        console.log("rightYScale(datum[sector+1]): " + rightYScale(datum[sector]));
 
         // Set attributes
         entity.attr("firstcoord", firstCoord);
