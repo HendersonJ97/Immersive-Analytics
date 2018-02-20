@@ -154,6 +154,7 @@
 
         console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + secondCoord);
         console.log("Sector: " + parseInt(sector));
+        console.log("leftAxis order: " + leftAxis.attr("positionorder"));
         console.log("datum: " + datum);
         console.log("datum[leftAxis name]: " + datum[leftAxis.attr("name")]);
         console.log("datum[rightAxis name]: " + datum[rightAxis.attr("name")]);
@@ -163,7 +164,7 @@
         // Set attributes
         entity.attr("firstcoord", firstCoord);
         entity.attr("secondcoord", secondCoord);
-        entity.attr("sector", sector);
+        entity.attr("sector", leftAxis.attr("positionorder"));
       });
     }
 
