@@ -21,6 +21,7 @@
     var background, foreground;
 
     var csvData;
+    var names;
 
     var offsetx = 500;
     var zOffset = 0;
@@ -35,7 +36,7 @@
       // Delete old axis (if they exist)
       d3.select("a-scene").selectAll("a-datum").remove();
       // Generate column position scale
-      var names = d3.keys(cars[0]).filter(function(column_name) {
+      names = d3.keys(cars[0]).filter(function(column_name) {
         return column_name != "name";
       })
       var xScale = d3.scale.linear();
@@ -255,64 +256,36 @@
           var prevAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder - 1) + "']");
           var nextAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder + 1) + "']");
 
-          // Check if at ends
-          if (!prevAxis.empty()) {
-            // Check if before previous axis (moving up in the list)
-            if (data.positionX < prevAxis.attr("positionx") ||
-              data.positionY < prevAxis.attr("positiony")) {
-              // Swap prevAxis' positionOrder
-              prevAxis.attr("positionorder", data.positionOrder);
-              // Decrement own positionOrder
-              data.positionOrder--;
-            }
-            // Update the sectors around it
-            if (data.positionOrder == csvData.length - 1) {
-              // Far right moving in
-              // Update sectors at length - 2, length - 3
-              generateLines(csvData.length - 2);
-              generateLines(csvData.length - 3);
-            } else if (data.positionOrder == 1) {
-              // positionOrder = 1
-              // Update sectors 0, 1
-              generateLines(0);
-              generateLines(1);
-            } else {
-              // Middle section
-              // Update 3 sectors
-              // sectors (positionOrder - 1), positionOrder, (positionOrder + 1)
-              for (i = (data.positionOrder - 1); i < data.positionOrder + 2; i++) {
-                generateLines(i);
-              }
+          // Check for order changes
+          if (!prevAxis.empty() && (data.positionX < prevAxis.attr("positionx") ||
+              data.positionZ < prevAxis.attr("positionz"))) {
+            // Axis has been moved down the list
+            // Swap prevAxis' positionOrder
+            prevAxis.attr("positionorder", data.positionOrder);
+            // Decrement positionOrder
+            data.positionOrder--;
+          } else if (!nextAxis.empty() && (data.positionX > nextAxis.attr("positionx") ||
+              data.positionZ > nextAxis.attr("positionz"))) {
+            // Axis has been moved up the list
+            // Swap nextAxis' positionOrder
+            nextAxis.attr("positionorder", data.positionOrder);
+            // Increment positionOrder
+            data.positionOrder++;
+          }
 
-            }
-          } else if (!nextAxis.empty()) {
-            // Check if after next axis
-            if (data.positionX > nextAxis.attr("positionx") ||
-              data.positionY > nextAxis.attr("positiony")) {
-              // Swap prevAxis' positionOrder
-              nextAxis.attr("positionorder", data.positionOrder);
-              // Increment own positionOrder
-              data.positionOrder++;
-            }
-
-            // Update the sectors around it
-            if (data.positionOrder == 0) {
-              // Far left moving in
-              // Update sectors at 0, 1
-              generateLines(0);
-              generateLines(1);
-            } else if (data.positionOrder == csvData.length - 2) {
-              // Update sectors at csvData.length - 2, csvData.length - 3
-              generateLines(csvData.length - 2);
-              generateLines(csvData.length - 3);
-            } else {
-              // Middle section
-              // Update 3 sectors
-              // sectors (positionOrder - 1), positionOrder, (positionOrder + 1)
-              for (i = (data.positionOrder - 1); i < data.positionOrder + 2; i++) {
-                generateLines(i);
-              }
-
+          // Update lines
+          if (data.positionOrder == 0) {
+            // Start
+            generateLines(0);
+            generateLines(1);
+          } else if (data.positionOrder == names.length - 1) {
+            // End
+            generateLines(data.positionOrder - 1);
+            generateLines(data.positionOrder - 2);
+          } else {
+            // Middle
+            for (i = (data.positionOrder - 1); i < data.positionOrder + 2; i++) {
+              generateLines(i);
             }
           }
 
