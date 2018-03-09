@@ -268,6 +268,7 @@
             // Swap prevAxis' positionOrder
             prevAxis.attr("positionorder", data.positionOrder);
             // Decrement positionOrder
+            this.attr("positionorder", data.positionOrder - 1);
             data.positionOrder--;
           } else if (!nextAxis.empty() && (data.positionX > nextAxis.attr("positionx") ||
               data.positionZ > nextAxis.attr("positionz"))) {
@@ -275,6 +276,7 @@
             // Swap nextAxis' positionOrder
             nextAxis.attr("positionorder", data.positionOrder);
             // Increment positionOrder
+            this.attr("positionorder", data.positionOrder + 1);
             data.positionOrder++;
           }
 
