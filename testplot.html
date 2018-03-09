@@ -119,6 +119,11 @@
     })
 
     function generateLines(sector) {
+      if (sector < 0) {
+        // No section here
+        return 0;
+      }
+
       // eg section 1: axes 1 to 2
       // Retrieve axes of section
       var leftAxis = d3.select("a-scene").select("a-axis[positionorder='" + sector + "']");
@@ -284,7 +289,7 @@
             generateLines(data.positionOrder - 2);
           } else {
             // Middle
-            for (i = (data.positionOrder - 1); i < data.positionOrder + 2; i++) {
+            for (i = (data.positionOrder - 2); i < data.positionOrder + 2; i++) {
               generateLines(i);
             }
           }
