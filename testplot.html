@@ -26,6 +26,49 @@
     var offsetx = 500;
     var zOffset = 0;
 
+    var selectedElement;
+    var ghostElement;
+    var holding = false;
+
+    AFRAME.registerComponent('controller-listener', {
+      init: function () {
+
+        this.el.addEventListener('click', function (evt) {
+          if (holding) {
+            // Replace old element with new element
+            var newCoords = evt.detail.intersection.point;
+
+            selectedElement.setAttribute('positionX', newCoords[0]);
+            selectedElement.setAttribute('positionZ', newCoords[2]);
+            selectedElement.setAttribute('colour', '#FFF');
+
+            holding = false;
+          }else{
+            // Store this element
+            selectedElement = evt.detail.el;
+
+            if (!(selectedElement.getAttribute('axis').empty())) {
+              // Axis
+
+              holding = true;
+              // Give visual feedback
+              selectedElement.setAttribute('colour', '#AAA')
+
+              // Create a duplicate ghost element on the raycaster
+            } else if (!(selectedElement.getAttribute('datum'))) {
+              // Datum
+
+              var text = d3.select("a-text[id='Display']");
+
+
+            }
+          }
+
+
+        });
+      }
+    });
+
     d3.csv("cars.csv", function(cars) {
       // Store data
       csvData = cars;
@@ -66,49 +109,6 @@
           entity.attr("minvalue", boundaries[0]);
           entity.attr("maxvalue", boundaries[1]);
         });
-
-      // Generate Lines
-      //for (i = 0; i < names.length - 2; i++) {
-      //  generateLines(i);
-      //}
-
-      //generateLines(0);
-      //generateLines(1);
-      //generateLines(2);
-      //generateLines(3);
-      //generateLines(4);
-      //generateLines(5);
-      /*
-            x.domain(dimensions = d3.keys(cars[0]) // get column names (leaving as global)
-              .filter(function(column_name) {
-                return column_name != "name" && (y[column_name] = d3.scale.linear() // Discard names
-                  .domain(d3.extent(cars, function(max_values) { // create scale from max column values
-                    return +max_values[column_name]
-                  }))
-                  .range([height, 0]))
-              }));*/
-      /*
-            var lines = d3.select("a-scene").selectAll("a-entity")
-              .data(cars)
-              .enter()
-              .append("a-entity")
-              .each(function(datum, index) {
-                // Select itself
-                var entity = d3.select(this);
-                var coordinates = dimensions.map(function(column_name) {
-                  return [x(column_name), y[column_name](datum[column_name])];
-                });
-                //console.log("coords", coordinates);
-                // Loop for each dimension
-                for (i = 0; i < coordinates.length - 1; i++) {
-                  var value = "start: " + offsetx + " " + coordinates[i][1] + " " + (coordinates[i][0] + offsetz) +
-                    "; end: " + offsetx + " " + coordinates[i + 1][1] + " " + (coordinates[i + 1][0] + offsetz) +
-                    "; color: red";
-                  //console.log("lines", value);
-                  entity.attr("line__" + (i + 1), value);
-                }
-              })
-      */
       /*
               var plane = d3.select("a-scene")
                 .append("a-plane")
@@ -305,7 +305,7 @@
           positionArray[3] = data.positionX;
           positionArray[4] = data.height;
           positionArray[5] = data.positionZ;
-          
+
           geometry.attributes.position.needsUpdate = true;
 -         geometry.computeBoundingSphere();
         }
@@ -441,29 +441,9 @@
         secondcoord: 'datum.secondCoord'
       }
     })
-    
-    AFRAME.registerComponent('custom-controls', {
-      schema: {
-        hand: {default: ''},
-        model: {default: 'customControllerModel.gltf'}
-      },
-      
-      update function () {
-        var controlConfiguration = {
-          hand: this.data.hand,
-          model: false,
-          rotationOffset: hand === 'left' ? 90 : -90
-        };
-                             
-        el.setAttribute('vive-controls', controlConfiguration);
-        el.setAttribute('oculus-touch-controls', controlConfiguration);
-        el.setAttribute('daydream-controls', controlConfiguration);
-        el.setAttribute('gearvr-controls', controlConfiguration);
-        el.setAttribute('windows-motion-controls', controlConfiguration);
-    
-        el.setAttribute('gltf-model', this.data.model);
-      }
-    });
+
+
+
   </script>
   <a-scene>
     <a-assets>
@@ -474,7 +454,11 @@
     </a-camera>
     <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
     <a-plane color='#CCC' height="500" width="500" rotation="-90 0 0"></a-plane>
-    <a-entity laser-controls="hand: right"></a-entity>
+    <a-entity laser-controls="hand: right" controller-listener></a-entity>
+    <a-entity vive-controls="hand: left">
+      <a-box depth="0.2" height="1" width="0.5"></a-box>
+      <a-text value="Test" id='Display'></a-text>
+    </a-entity>
   </a-scene>
 </body>
 
