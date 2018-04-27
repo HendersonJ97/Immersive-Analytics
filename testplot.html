@@ -182,7 +182,7 @@
       var index = 1;
       var value;
       
-      for each (var datum in csvData) {
+      for (let datum of csvData) {
         value = "start: " + leftAxis.attr("positionx") + ", " + leftYScale(datum[leftAxis.attr("name")]) + ", " + leftAxis.attr("positionz");
         value += "; end: " + rightAxis.attr("positionx") + ", " + rightYScale(datum[rightAxis.attr("name")]) + ", " + rightAxis.attr("positionz");
         value += "; color: red";
