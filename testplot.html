@@ -65,8 +65,6 @@
 
             }
           }
-
-
         });
       }
     });
@@ -152,33 +150,6 @@
 
       console.log("Generating lines for sector: " + sector);
 
-      // Generate new Lines
-      /*d3.select("a-scene").selectAll("a-datum[sector='" + sector + "']")
-        .data(csvData)
-        .enter()
-        .append("a-datum")
-        .each(function(datum, index) {
-          // Select itself
-          var entity = d3.select(this);
-          // offsetx(from axes) + scale(datum[sector]) + offsetz(from axes)
-          var firstCoord = leftAxis.attr("positionx") + " " + leftYScale(datum[leftAxis.attr("name")]) + " " + leftAxis.attr("positionz");
-          var secondCoord = rightAxis.attr("positionx") + " " + rightYScale(datum[rightAxis.attr("name")]) + " " + rightAxis.attr("positionz");
-
-          //console.log("Creating line, first coord: " + firstCoord + " ; second coord: " + secondCoord);
-          //console.log("Sector: " + parseInt(sector));
-          //console.log("leftAxis order: " + leftAxis.attr("positionorder"));
-          //console.log("datum: " + datum);
-          //console.log("datum[leftAxis name]: " + datum[leftAxis.attr("name")]);
-          //console.log("datum[rightAxis name]: " + datum[rightAxis.attr("name")]);
-          //console.log("leftYScale(datum[left name]): " + leftYScale(datum[leftAxis.attr("name")]));
-          //console.log("rightYScale(datum[right name]): " + rightYScale(datum[rightAxis.attr("name")]));
-
-          // Set attributes
-          entity.attr("firstcoord", firstCoord);
-          entity.attr("secondcoord", secondCoord);
-          entity.attr("sector", leftAxis.attr("positionorder"));
-        });*/
-
       var entity = d3.select("a-scene").append("a-datum");
       entity.attr("sector", sector);
       var index = 1;
@@ -191,27 +162,6 @@
         entity.attr("line__" + index, value);
         index++;
       }
-    }
-
-    function isEqualVec3(a, b) {
-      if (!a || !b) {
-        return false;
-      }
-      return (a.x === b.x && a.y === b.y && a.z === b.z);
-    }
-
-    function arraysEqual(a, b) {
-      if (a === b) return true;
-      if (a == null || b == null) return false;
-      if (a.length != b.length) return false;
-
-      // If you don't care about the order of the elements inside
-      // the array, you should sort both arrays here.
-
-      for (var i = 0; i < a.length; ++i) {
-        if (a[i] !== b[i]) return false;
-      }
-      return true;
     }
 
     /**
@@ -359,65 +309,12 @@
         }
       },
 
-      init: function() {
-        var data = this.data;
-        var geometry;
-        var material;
-
-        material = this.material = new THREE.LineBasicMaterial({
-          color: data.colour,
-          opacity: 1,
-          transparent: 0,
-          visible: true
-        });
-
-        //geometry = this.geometry = new THREE.BufferGeometry();
-        //geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
-
-        //this.line = new THREE.Line(geometry, material);
-        //this.el.setObject3D(this.attrName, this.line);
-      },
-
       update: function(oldData) {
         // On property update (and after init)
         var data = this.data; // Property values
-        var geometry = this.geometry;
-        var geoNeedsUpdate = false;
-        var material = this.material;
-        //var positionArray = geometry.attributes.position.array;
 
-        // Update Geometry
-        /*
-        if (!isEqualVec3(data.firstCoord, oldData.firstCoord)) {
-          positionArray[0] = data.firstCoord.x;
-          positionArray[1] = data.firstCoord.y;
-          positionArray[2] = data.firstCoord.z;
-          geoNeedsUpdate = true;
-        }
-
-        if (!isEqualVec3(data.secondCoord, oldData.secondCoord)) {
-          positionArray[3] = data.secondCoord.x;
-          positionArray[4] = data.secondCoord.y;
-          positionArray[5] = data.secondCoord.z;
-          geoNeedsUpdate = true;
-        }
-
-        if (geoNeedsUpdate) {
-          geometry.attributes.needsUpdate = true;
-          geometry.computeBoundingSphere();
-        }
-
-        material.color.setStyle(data.colour);
-        material.opacity = 1;
-        material.transparent = 0;
-        material.visible = true;
-        */
-
-        //if (!arraysEqual(data.firstCoord, oldData.firstCoord)
-      },
-
-      remove: function() {
-        this.el.removeObject3D('line', this.line);
+        if (oldData.colour != data.colour)
+          generateLines(sector, data.colour);
       }
     })
 
@@ -449,20 +346,14 @@
       mappings: {
         colour: 'datum.colour',
         sector: 'datum.sector',
-        thickness: 'datum.thickess',
-        firstcoord: 'datum.firstCoord',
-        secondcoord: 'datum.secondCoord'
       }
     })
-
-
-
   </script>
   <a-scene>
     <a-assets>
       <img id="ground" src="ground.png">
     </a-assets>
-    <a-camera look-controls wasd-controls='easing:10'>
+    <a-camera look-controls wasd-controls='easing:10; fly:true'>
       <a-cursor></a-cursor>
     </a-camera>
     <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
