@@ -26,8 +26,6 @@
     var offsetx = 500;
     var zOffset = 0;
 
-    var colour = "red";
-
     var selectedElement;
     var ghostElement;
     var holding = false;
@@ -42,7 +40,7 @@
 
             selectedElement.setAttribute('positionX', newCoords[0]);
             selectedElement.setAttribute('positionZ', newCoords[2]);
-            selectedElement.setAttribute('colour', '#FFF');
+            selectedElement.setAttribute('colour', 'blue');
 
             holding = false;
           }else{
@@ -173,7 +171,7 @@
           default: '#FFF'
         },
         linecolour: {
-          default: '#FFF'
+          default: 'red'
         },
         name: {
           type: 'string',
@@ -300,7 +298,7 @@
     AFRAME.registerComponent('datum', {
       schema: {
         colour: {
-          default: '#FFF'
+          default: 'red'
         },
         sector: {
           type: 'int',
