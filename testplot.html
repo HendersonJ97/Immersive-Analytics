@@ -26,6 +26,8 @@
     var offsetx = 500;
     var zOffset = 0;
 
+    var colour = "red";
+
     var selectedElement;
     var ghostElement;
     var holding = false;
@@ -118,7 +120,7 @@
       */
     })
 
-    function generateLines(sector) {
+    function generateLines(sector, lineColour) {
       if (sector < 0) {
         // No section here
         return 0;
@@ -185,12 +187,10 @@
       for (let datum of csvData) {
         value = "start: " + leftAxis.attr("positionx") + ", " + leftYScale(datum[leftAxis.attr("name")]) + ", " + leftAxis.attr("positionz");
         value += "; end: " + rightAxis.attr("positionx") + ", " + rightYScale(datum[rightAxis.attr("name")]) + ", " + rightAxis.attr("positionz");
-        value += "; color: red";
+        value += "; color: " + lineColour;
         entity.attr("line__" + index, value);
         index++;
       }
-
-
     }
 
     function isEqualVec3(a, b) {
@@ -314,16 +314,16 @@
           // Update lines
           if (data.positionOrder == 0) {
             // Start
-            generateLines(0);
-            generateLines(1);
+            generateLines(0, colour);
+            generateLines(1, colour);
           } else if (data.positionOrder == names.length - 1) {
             // End
-            generateLines(data.positionOrder - 1);
-            generateLines(data.positionOrder - 2);
+            generateLines(data.positionOrder - 1, colour);
+            generateLines(data.positionOrder - 2, colour);
           } else {
             // Middle
             for (i = (data.positionOrder - 2); i < data.positionOrder + 3; i++) {
-              generateLines(i);
+              generateLines(i, colour);
             }
           }
 
@@ -356,16 +356,6 @@
         sector: {
           type: 'int',
           default: 0
-        },
-        thickness: {
-          type: 'int',
-          default: 1
-        },
-        firstCoord: {
-          type: 'array'
-        },
-        secondCoord: {
-          type: 'array'
         }
       },
 
