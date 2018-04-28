@@ -176,21 +176,21 @@
           entity.attr("secondcoord", secondCoord);
           entity.attr("sector", leftAxis.attr("positionorder"));
         });*/
-      
+
       var entity = d3.select("a-scene").append("a-datum");
       entity.attr("sector", sector);
       var index = 1;
       var value;
-      
+
       for (let datum of csvData) {
         value = "start: " + leftAxis.attr("positionx") + ", " + leftYScale(datum[leftAxis.attr("name")]) + ", " + leftAxis.attr("positionz");
         value += "; end: " + rightAxis.attr("positionx") + ", " + rightYScale(datum[rightAxis.attr("name")]) + ", " + rightAxis.attr("positionz");
         value += "; color: red";
         entity.attr("line__" + index, value);
-        
+
       }
-      
-      
+
+
     }
 
     function isEqualVec3(a, b) {
@@ -199,7 +199,7 @@
       }
       return (a.x === b.x && a.y === b.y && a.z === b.z);
     }
-    
+
     function arraysEqual(a, b) {
       if (a === b) return true;
       if (a == null || b == null) return false;
@@ -394,7 +394,7 @@
         var geometry = this.geometry;
         var geoNeedsUpdate = false;
         var material = this.material;
-        var positionArray = geometry.attributes.position.array;
+        //var positionArray = geometry.attributes.position.array;
 
         // Update Geometry
         /*
@@ -422,7 +422,7 @@
         material.transparent = 0;
         material.visible = true;
         */
-        
+
         //if (!arraysEqual(data.firstCoord, oldData.firstCoord)
       },
 
