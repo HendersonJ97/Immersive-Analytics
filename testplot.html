@@ -313,7 +313,7 @@
         // On property update (and after init)
         var data = this.data; // Property values
 
-        if (oldData.colour != data.colour)
+        if ((data.colour != null) && (oldData.colour != data.colour))
           generateLines(data.sector, data.colour);
       }
     })
