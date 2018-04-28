@@ -313,8 +313,11 @@
         // On property update (and after init)
         var data = this.data; // Property values
 
-        if ((oldData.colour != null) && (oldData.colour != data.colour))
-          generateLines(data.sector, data.colour);
+        if (oldData.colour != data.colour){
+          for (var i = 1; i <= csvData.length(); i++){
+            this.setAttribute('line__'+i, 'color', data.colour);
+          }
+        }
       }
     })
 
