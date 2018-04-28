@@ -172,6 +172,9 @@
         colour: {
           default: '#FFF'
         },
+        linecolour: {
+          default: '#FFF'
+        },
         name: {
           type: 'string',
           default: ''
@@ -199,10 +202,6 @@
         minValue: {
           type: 'number',
           default: 0
-        },
-        thickness: {
-          type: 'int',
-          default: 1
         }
       },
 
@@ -264,16 +263,16 @@
           // Update lines
           if (data.positionOrder == 0) {
             // Start
-            generateLines(0, colour);
-            generateLines(1, colour);
+            generateLines(0, data.linecolour);
+            generateLines(1, data.linecolour);
           } else if (data.positionOrder == names.length - 1) {
             // End
-            generateLines(data.positionOrder - 1, colour);
-            generateLines(data.positionOrder - 2, colour);
+            generateLines(data.positionOrder - 1, data.linecolour);
+            generateLines(data.positionOrder - 2, data.linecolour);
           } else {
             // Middle
             for (i = (data.positionOrder - 2); i < data.positionOrder + 3; i++) {
-              generateLines(i, colour);
+              generateLines(i, data.linecolour);
             }
           }
 
@@ -307,17 +306,6 @@
           type: 'int',
           default: 0
         }
-      },
-
-      update: function(oldData) {
-        // On property update (and after init)
-        var data = this.data; // Property values
-
-        if (oldData.colour != data.colour){
-          for (var i = 1; i <= csvData.length(); i++){
-            this.setAttribute('line__'+i, 'color', data.colour);
-          }
-        }
       }
     })
 
@@ -336,7 +324,7 @@
         height: 'axis.height',
         maxvalue: 'axis.maxValue',
         minvalue: 'axis.minValue',
-        thickness: 'axis.thickness'
+        linecolour: 'axis.linecolour'
       }
     })
 
@@ -348,7 +336,7 @@
 
       mappings: {
         colour: 'datum.colour',
-        sector: 'datum.sector',
+        sector: 'datum.sector'
       }
     })
   </script>
