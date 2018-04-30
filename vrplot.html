@@ -277,7 +277,7 @@
           }
 
           mesh.position.set(data.positionX, 0, data.positionZ);
-          geometry.parameters.height.set(data.height);
+          geometry.parameters.height = data.height;
 
           geometry.attributes.position.needsUpdate = true;
 -         geometry.computeBoundingSphere();
