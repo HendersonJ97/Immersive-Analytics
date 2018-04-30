@@ -35,7 +35,6 @@
       init: function () {
 
         this.el.addEventListener('click', function (evt) {
-          console.log("hit something");
           
           if (holding) {
             // Replace old element with new element
@@ -70,6 +69,58 @@
             }
           }
         });
+      }
+    });
+    
+    AFRAME.registerComponent('movement-listener', {
+      schema: {
+        cameraRig: {type: 'selector'},
+        speed: {type: 'int', default: 2}
+      },
+      
+      init: function () {
+        this.pressed = {};
+        this.position = {};
+        
+        el.addEventListener('triggerup', this.onTriggerUp);
+        el.addEventListener('triggerdown', this.onTriggerDown);
+        el.addEventListener('gripup', this.onGripUp);
+        el.addEventListener('gripdown', this.onGripDown);
+      },
+      
+      tick: function (time, delta) {
+        var currentPosition;
+        var data = this.data;
+        var el = this.el;
+        var position = this.position;
+        var speed = this.speed;
+        
+        const rig = data.cameraRig || el.sceneEl.camera.el;
+        if (pressed.trigger) {
+          currentPosition = rig.getAttribute('position');
+          position.x = currentPosition.x + data.speed;
+          rig.setAttribute('position', position);
+        } else if (pressed.grippad) {
+          currentPosition = rig.getAttribute('position');
+          position.x = currentPosition.x - data.speed;
+          rig.setAttribute('position', position);
+        }
+      },
+      
+      onTriggerDown: function (event) {
+        this.keys[trigger] = true;
+      },
+      
+      onTriggerUp: function (event) {
+        delete this.keys[trigger];
+      },
+      
+      onGripDown: function (event) {
+        this.keys[grippad] = true;
+      },
+      
+      onGripUp: function (event) {
+        delete this.keys[grippad];
       }
     });
 
@@ -363,7 +414,7 @@
       <!-- camera -->
       <a-entity id="head" camera wasd-controls look-controls></a-entity>
       <!-- hand controls -->
-      <a-entity id="left-hand" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" vive-controls="hand: left"></a-entity>
+      <a-entity id="left-hand" movement-listener="cameraRig: #cameraRig;" vive-controls="hand: left"></a-entity>
       <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
     </a-entity>
     <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
