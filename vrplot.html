@@ -235,7 +235,7 @@
         // Height change
         if (data.height !== oldData.height){
           this.el.removeObject3D(this.attrName, this.mesh);
-          if (!geometry.empty()){
+          if (!(typeof something === "undefined")){
             geometry.dispose();
           }
           
