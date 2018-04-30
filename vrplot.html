@@ -235,7 +235,9 @@
         // Height change
         if (data.height !== oldData.height){
           this.el.removeObject3D(this.attrName, this.mesh);
-          geometry.dispose();
+          if (!geometry.empty()){
+            geometry.dispose();
+          }
           
           geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
           mesh = new THREE.Mesh(geometry, material);
