@@ -4,7 +4,6 @@
 <head>
   <script src="https://d3js.org/d3.v3.min.js"></script>
   <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-  <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.0/dist/aframe-extras.min.js"></script>
   <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
 </head>
 
@@ -36,6 +35,8 @@
       init: function () {
 
         this.el.addEventListener('click', function (evt) {
+          console.log("hit something");
+          
           if (holding) {
             // Replace old element with new element
             var newCoords = evt.detail.intersection.point;
@@ -210,18 +211,17 @@
         var geometry;
         var material;
 
-        material = this.material = new THREE.LineBasicMaterial({
+        material = this.material = new THREE.MeshBasicMaterial({
           color: data.colour,
           opacity: 1,
           transparent: 0,
           visible: true
         });
 
-        geometry = this.geometry = new THREE.BufferGeometry();
-        geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(2 * 3), 3));
+        geometry = this.geometry = new THREE.BoxBufferGeometry(4, 1, 4, 1, 1, 1);
 
-        this.line = new THREE.Line(geometry, material);
-        this.el.setObject3D(this.attrName, this.line);
+        this.mesh = new THREE.Mesh(geometry, material);
+        this.el.setObject3D(this.attrName, this.mesh);
       },
 
       update: function(oldData) {
@@ -230,7 +230,7 @@
         var geometry = this.geometry;
         var geoNeedsUpdate = false;
         var material = this.material;
-        var positionArray = geometry.attributes.position.array;
+        var mesh = this.mesh;
 
         // Geometry change
         if (data.positionX !== oldData.positionX ||
@@ -276,13 +276,8 @@
             }
           }
 
-          // Reset mesh
-          positionArray[0] = data.positionX;
-          positionArray[1] = 0;
-          positionArray[2] = data.positionZ;
-          positionArray[3] = data.positionX;
-          positionArray[4] = data.height;
-          positionArray[5] = data.positionZ;
+          mesh.position.set(data.positionX, 0, data.positionZ);
+          geometry.parameters.height.set(data.height);
 
           geometry.attributes.position.needsUpdate = true;
 -         geometry.computeBoundingSphere();
