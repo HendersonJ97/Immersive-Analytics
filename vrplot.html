@@ -49,13 +49,14 @@
           }else{
             // Store this element
             selectedElement = evt.detail.el;
-
+            selectedElement.setAttribute('colour', 'orange');
+            
             if (!(selectedElement.getAttribute('axis').empty())) {
               // Axis
 
               holding = true;
               // Give visual feedback
-              selectedElement.setAttribute('colour', '#AAA')
+              selectedElement.setAttribute('colour', '#AAA');
 
               // Create a duplicate ghost element on the raycaster
             } else if (!(selectedElement.getAttribute('datum'))) {
