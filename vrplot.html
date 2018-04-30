@@ -43,9 +43,10 @@
 
             selectedElement.setAttribute('positionX', newCoords.x);
             selectedElement.setAttribute('positionZ', newCoords.y);
-            selectedElement.setAttribute('colour', '#FFF');
+            selectedElement.setAttribute('colour', 'purple');
 
             holding = false;
+            selectedElement = undefined;
           }else{
             // Store this element
             selectedElement = evt.detail.intersectedEl;
