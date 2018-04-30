@@ -218,7 +218,7 @@
           visible: true
         });
 
-        geometry = this.geometry = new THREE.BoxBufferGeometry(4, 10, 4, 1, 1, 1);
+        geometry = this.geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
 
         this.mesh = new THREE.Mesh(geometry, material);
         this.el.setObject3D(this.attrName, this.mesh);
@@ -231,6 +231,16 @@
         var geoNeedsUpdate = false;
         var material = this.material;
         var mesh = this.mesh;
+        
+        // Height change
+        if (data.height !== oldData.height){
+          this.el.removeObject3D(this.attrName, this.mesh);
+          geometry.dispose();
+          
+          geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
+          mesh = new THREE.Mesh(geometry, material);
+          this.el.setObject3D(this.attrName, this.mesh);
+        }
 
         // Geometry change
         if (data.positionX !== oldData.positionX ||
@@ -275,17 +285,16 @@
               generateLines(i, data.linecolour);
             }
           }
-
+          
           mesh.position.set(data.positionX, 0, data.positionZ);
-          geometry.parameters.height = data.height;
-
+          
           geometry.attributes.position.needsUpdate = true;
 -         geometry.computeBoundingSphere();
         }
       },
 
       remove: function() {
-        this.el.removeObject3D('line', this.line);
+        this.el.removeObject3D(this.attrName, this.mesh);
       }
     })
 
