@@ -218,7 +218,7 @@
           visible: true
         });
 
-        geometry = this.geometry = new THREE.BoxBufferGeometry(4, 1, 4, 1, 1, 1);
+        geometry = this.geometry = new THREE.BoxBufferGeometry(4, 10, 4, 1, 1, 1);
 
         this.mesh = new THREE.Mesh(geometry, material);
         this.el.setObject3D(this.attrName, this.mesh);
@@ -277,7 +277,7 @@
           }
 
           mesh.position.set(data.positionX, 0, data.positionZ);
-          geometry.parameters.height = data.height;
+          geometry.attributes.height = data.height;
 
           geometry.attributes.position.needsUpdate = true;
 -         geometry.computeBoundingSphere();
