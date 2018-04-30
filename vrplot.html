@@ -118,6 +118,8 @@
                 .attr("width", width);
       */
     })
+    
+    d3.selectAll("a-axis").attr("needsUpdate", "true);
 
     function generateLines(sector, lineColour) {
       if (sector < 0) {
@@ -203,6 +205,10 @@
         minValue: {
           type: 'number',
           default: 0
+        },
+        needsUpdate: {
+          type:'boolean',
+          default: false
         }
       },
 
@@ -293,6 +299,9 @@
         
         mesh.position.set(data.positionX, data.height/2, data.positionZ);
           
+        if (data.needsUpdate === 'true'){
+          data.needsUpdate = 'false';
+        }
         //geometry.attributes.position.needsUpdate = true;
         //geometry.computeBoundingSphere();
       },
@@ -332,7 +341,8 @@
         height: 'axis.height',
         maxvalue: 'axis.maxValue',
         minvalue: 'axis.minValue',
-        linecolour: 'axis.linecolour'
+        linecolour: 'axis.linecolour',
+        needsUpdate: 'axis.needsUpdate'
       }
     })
 
