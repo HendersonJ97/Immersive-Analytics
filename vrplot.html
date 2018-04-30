@@ -218,10 +218,10 @@
           visible: true
         });
 
-        geometry = this.geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
+        //geometry = this.geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
 
-        this.mesh = new THREE.Mesh(geometry, material);
-        this.el.setObject3D(this.attrName, this.mesh);
+        //this.mesh = new THREE.Mesh(geometry, material);
+        //this.el.setObject3D(this.attrName, this.mesh);
       },
 
       update: function(oldData) {
@@ -291,8 +291,8 @@
         
         mesh.position.set(data.positionX, data.height/2, data.positionZ);
           
-        geometry.attributes.position.needsUpdate = true;
-        geometry.computeBoundingSphere();
+        //geometry.attributes.position.needsUpdate = true;
+        //geometry.computeBoundingSphere();
       },
 
       remove: function() {
