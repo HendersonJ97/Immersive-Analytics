@@ -50,8 +50,9 @@
             // Store this element
             selectedElement = evt.detail.intersectedEl;
             selectedElement.setAttribute('colour', 'orange');
+            var axis = selectedElement.getAttribute('axis');
             
-            if (!(selectedElement.getAttribute('axis').empty())) {
+            if (!(typeof axis === "undefined") {
               // Axis
 
               holding = true;
