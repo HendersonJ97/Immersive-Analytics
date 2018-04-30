@@ -109,19 +109,19 @@
       },
       
       onTriggerDown: function (event) {
-        this.keys[trigger] = true;
+        this.keys['trigger'] = true;
       },
       
       onTriggerUp: function (event) {
-        delete this.keys[trigger];
+        delete this.keys['trigger'];
       },
       
       onGripDown: function (event) {
-        this.keys[grippad] = true;
+        this.keys['grippad'] = true;
       },
       
       onGripUp: function (event) {
-        delete this.keys[grippad];
+        delete this.keys['grippad'];
       }
     });
 
