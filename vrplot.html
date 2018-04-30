@@ -259,8 +259,7 @@
           var nextAxis = d3.select("a-scene").select("a-axis[positionorder='" + (data.positionOrder + 1) + "']");
 
           // Check for order changes
-          if (!prevAxis.empty() && (data.positionX < prevAxis.attr("positionx") ||
-              data.positionZ < prevAxis.attr("positionz"))) {
+          if (!prevAxis.empty() && (data.positionX < prevAxis.attr("positionx"))) {
             // Axis has been moved down the list
             // Swap prevAxis' positionOrder
             prevAxis.attr("positionorder", data.positionOrder);
@@ -268,8 +267,7 @@
             var thisAxis =  d3.select("a-scene").select("a-axis[name='" + data.name + "']");
             thisAxis.attr("positionorder", data.positionOrder - 1);
             data.positionOrder--;
-          } else if (!nextAxis.empty() && (data.positionX > nextAxis.attr("positionx") ||
-              data.positionZ > nextAxis.attr("positionz"))) {
+          } else if (!nextAxis.empty() && (data.positionX > nextAxis.attr("positionx"))) {
             // Axis has been moved up the list
             // Swap nextAxis' positionOrder
             nextAxis.attr("positionorder", data.positionOrder);
