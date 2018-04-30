@@ -287,12 +287,12 @@
               generateLines(i, data.linecolour);
             }
           }
-          
-          mesh.position.set(data.positionX, data.height/2, data.positionZ);
-          
-          geometry.attributes.position.needsUpdate = true;
--         geometry.computeBoundingSphere();
         }
+        
+        mesh.position.set(data.positionX, data.height/2, data.positionZ);
+          
+        geometry.attributes.position.needsUpdate = true;
+        geometry.computeBoundingSphere();
       },
 
       remove: function() {
