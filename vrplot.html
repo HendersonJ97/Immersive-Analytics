@@ -97,11 +97,11 @@
         var speed = this.speed;
         
         const rig = data.cameraRig || el.sceneEl.camera.el;
-        if (pressed.trigger) {
+        if (this.pressed.trigger) {
           currentPosition = rig.getAttribute('position');
           position.x = currentPosition.x + data.speed;
           rig.setAttribute('position', position);
-        } else if (pressed.grippad) {
+        } else if (this.pressed.grippad) {
           currentPosition = rig.getAttribute('position');
           position.x = currentPosition.x - data.speed;
           rig.setAttribute('position', position);
