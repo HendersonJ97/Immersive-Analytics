@@ -117,8 +117,6 @@
                 .attr("height", height)
                 .attr("width", width);
       */
-      
-      d3.select("a-scene").selectAll("a-axis").attr("needsupdate", "true");
     });
 
     function generateLines(sector, lineColour) {
@@ -205,10 +203,6 @@
         minValue: {
           type: 'number',
           default: 0
-        },
-        needsUpdate: {
-          type:'boolean',
-          default: false
         }
       },
 
@@ -227,6 +221,8 @@
         geometry = this.geometry = new THREE.BoxBufferGeometry(4, data.height, 4, 1, 1, 1);
 
         this.mesh = new THREE.Mesh(geometry, material);
+        mesh.position.set(data.positionX, data.height/2, data.positionZ);
+        
         this.el.setObject3D('mesh', this.mesh);
       },
 
@@ -239,7 +235,7 @@
         var mesh = this.mesh;
         
         // Height change
-        if (data.height !== oldData.height){
+        /*if (data.height !== oldData.height){
           this.el.removeObject3D('mesh');
           if (!(typeof something === "undefined")){
             geometry.dispose();
@@ -250,7 +246,7 @@
           mesh.position.set(data.positionX, data.height/2, data.positionZ);
           
           this.el.setObject3D('mesh', this.mesh);
-        }
+        }*/
 
         // Geometry change
         if (data.positionX !== oldData.positionX ||
@@ -299,9 +295,6 @@
         
         mesh.position.set(data.positionX, data.height/2, data.positionZ);
           
-        //if (data.needsUpdate === 'true'){
-          data.needsUpdate = 'false';
-        //}
         //geometry.attributes.position.needsUpdate = true;
         //geometry.computeBoundingSphere();
       },
@@ -341,8 +334,7 @@
         height: 'axis.height',
         maxvalue: 'axis.maxValue',
         minvalue: 'axis.minValue',
-        linecolour: 'axis.linecolour',
-        needsupdate: 'axis.needsUpdate'
+        linecolour: 'axis.linecolour'
       }
     })
 
