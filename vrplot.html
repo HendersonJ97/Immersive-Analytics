@@ -48,7 +48,7 @@
             holding = false;
           }else{
             // Store this element
-            selectedElement = evt.detail.el;
+            selectedElement = evt.detail.intersectedEl;
             selectedElement.setAttribute('colour', 'orange');
             
             if (!(selectedElement.getAttribute('axis').empty())) {
