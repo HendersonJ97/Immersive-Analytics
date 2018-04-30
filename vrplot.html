@@ -41,8 +41,8 @@
             // Replace old element with new element
             var newCoords = evt.detail.intersection.point;
 
-            selectedElement.setAttribute('positionX', newCoords[0]);
-            selectedElement.setAttribute('positionZ', newCoords[2]);
+            selectedElement.setAttribute('positionX', newCoords.x);
+            selectedElement.setAttribute('positionZ', newCoords.y);
             selectedElement.setAttribute('colour', '#FFF');
 
             holding = false;
