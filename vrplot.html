@@ -1,36 +1,24 @@
 <!DOCTYPE html>
+<html>
 <meta charset="utf-8">
+  <head>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
+    <script src="generatescene.js"></script>
+  </head>
 
-<head>
-  <script src="https://d3js.org/d3.v3.min.js"></script>
-  <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
-  <script src="https://rawgit.com/fernandojsg/aframe-teleport-controls/master/dist/aframe-teleport-controls.min.js"></script>
-  <script src="generatescene.js"></script>
-</head>
-
-<body style='margin : 0px; overflow: hidden;'>
-  <a-scene>
-    <a-assets>
-      <img id="ground" src="ground.png">
-    </a-assets>
-    <!--<a-camera look-controls keyboard-controls>
-      <a-cursor></a-cursor>
-    </a-camera>-->
-    <a-entity id="cameraRig">
-      <!-- camera -->
-      <a-entity id="head" camera wasd-controls look-controls></a-entity>
-      <!-- hand controls -->
-      <a-entity id="left-hand" movement-listener="cameraRig: #cameraRig;" vive-controls="hand: left"></a-entity>
-      <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
-    </a-entity>
-    <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
-    <a-plane color='#CCC' height="500" width="500" rotation="-90 0 0"></a-plane>
-    <!--<a-entity laser-controls="hand: right" controller-listener></a-entity>
-    <a-entity vive-controls="hand: left">
-      <a-box depth="0.2" height="1" width="0.5"></a-box>
-      <a-text value="Test" id='Display'></a-text>
-    </a-entity>-->
-  </a-scene>
-</body>
-
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene>
+      <a-entity id="cameraRig">
+        <!-- camera -->
+        <a-entity id="head" camera wasd-controls look-controls></a-entity>
+        <!-- hand controls -->
+        <a-entity id="left-hand" movement-listener="cameraRig: #cameraRig;" vive-controls="hand: left"></a-entity>
+        <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
+      </a-entity>
+      <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
+      <a-plane color='#CCC' height="500" width="500" rotation="-90 0 0"></a-plane>
+    </a-scene>
+  </body>
 </html>
