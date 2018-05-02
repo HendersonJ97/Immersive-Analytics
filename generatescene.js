@@ -299,6 +299,7 @@ AFRAME.registerComponent('axis', {
     var geoNeedsUpdate = false;
     var material = this.material;
     var mesh = this.mesh;
+    var text = d3.select(this).select("a-text");
 
     // Geometry change
     if (data.positionX !== oldData.positionX ||
@@ -342,7 +343,10 @@ AFRAME.registerComponent('axis', {
         }
       }
     }
-
+    
+    // Update text
+    text.attr("position", "0 " + (data.height + 10) + " 0");
+    
     // Update mesh position and colour
     mesh.position.set(data.positionX, data.height / 2, data.positionZ);
     material.color.set(data.colour);
