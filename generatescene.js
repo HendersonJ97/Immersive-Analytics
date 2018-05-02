@@ -298,7 +298,8 @@ AFRAME.registerComponent('axis', {
     var geoNeedsUpdate = false;
     var material = this.material;
     var mesh = this.mesh;
-    var text = this.el.children[0];
+    var el = this.el;
+    var text = el.children[0];
 
     // Geometry change
     if (data.positionX !== oldData.positionX ||
@@ -344,7 +345,7 @@ AFRAME.registerComponent('axis', {
     }
     
     // Update text
-    text.object3D.position.set(0, data.height + 10, 0);
+    text.object3D.position.set(data.positionX, data.height + 10, data.positionZ);
     text.object3D.scale.set(40, 40, 40);
     text.setAttribute("name", data.name);
     
