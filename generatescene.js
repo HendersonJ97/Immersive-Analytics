@@ -49,14 +49,6 @@ AFRAME.registerComponent('controller-listener', {
           holding = true;
           // Give visual feedback
           selectedElement.setAttribute('colour', 'orange');
-
-          // Create a duplicate ghost element on the raycaster
-        } else if (!(selectedElement.getAttribute('datum'))) {
-          // Datum
-
-          var text = d3.select("a-text[id='Display']");
-
-
         }
       }
     });
