@@ -16,9 +16,11 @@
         <a-entity id="head" camera wasd-controls look-controls></a-entity>
         <!-- hand controls -->
         <a-entity id="left-hand" movement-listener="cameraRig: #cameraRig" hand-controls="left">
-          <a-text value="Squeeze hand to move backward Pull trigger to move forward" position="0 0.1 0" rotation="0 90 0" wrap-count="30"></a-text>
+          <a-text value="Squeeze hand to move backward Pull trigger to move forward" position="0.14 0.2 0" rotation="0 0 -90" wrap-count="27" scale="0.1 0.1 0.1"></a-text>
         </a-entity>
-        <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
+        <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red">
+          <a-text value="Push the middle pad to select axis. Push again to choose new position" position="0.14 0.2 0" rotation="0 0 -90" wrap-count="27" scale="0.1 0.1 0.1"></a-text>
+        </a-entity>
       </a-entity>
       <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
       <a-plane color='#CCC' height="2000" width="2000" rotation="-90 0 0"></a-plane>
