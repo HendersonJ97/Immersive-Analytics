@@ -345,11 +345,10 @@ AFRAME.registerComponent('axis', {
     }
     
     // Update text
-    text.object3D.position.set(data.positionX, data.height + 10, data.positionZ);
-    text.object3D.scale.set(40, 40, 40);
+    //text.object3D.position.set(data.positionX, data.height + 10, data.positionZ);
+    //text.object3D.scale.set(40, 40, 40);
     text.setAttribute("name", data.name);
-    text.object3D.updateMatrixWorld();
-    
+    //text.object3D.updateMatrixWorld();
     text.setAttribute('position', {x: data.positionX, y: data.height + 10, z: data.positionZ});
     text.setAttribute('scale', {x: 40, y: 40, z: 40});
     
