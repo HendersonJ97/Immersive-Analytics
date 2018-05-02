@@ -16,7 +16,7 @@
         <a-entity id="head" camera wasd-controls look-controls></a-entity>
         <!-- hand controls -->
         <a-entity id="left-hand" movement-listener="cameraRig: #cameraRig" hand-controls="left">
-          <a-text value="Squeeze hand to move backward\nPull trigger to move forward" position="0 2 0"></a-text>
+          <a-text value="Squeeze hand to move backward\nPull trigger to move forward" position="0 0.1 0" rotation="0 90 0"></a-text>
         </a-entity>
         <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
       </a-entity>
