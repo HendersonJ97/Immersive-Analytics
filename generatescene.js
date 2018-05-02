@@ -80,6 +80,10 @@ AFRAME.registerComponent('movement-listener', {
     this.grippad = false;
     var el = this.el;
 
+    this.onTriggerUp = this.onTriggerUp.bind(this);
+    this.onGripUp = this.onGripUp.bind(this);
+    this.onGripDown = this.onGripDown.bind(this);
+    this.onTriggerDown = this.onTriggerDown.bind(this);
     // Set the event listeners for each button event
     el.addEventListener('pointup', this.onTriggerUp);
     el.addEventListener('pointdown', this.onTriggerDown);
