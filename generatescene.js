@@ -32,7 +32,7 @@ AFRAME.registerComponent('controller-listener', {
 
         // Move the select element to the new position
         selectedElement.setAttribute('positionX', newCoords.x);
-        selectedElement.setAttribute('positionZ', newCoords.y);
+        selectedElement.setAttribute('positionZ', newCoords.z);
         selectedElement.setAttribute('colour', previousColour);
 
         holding = false;
