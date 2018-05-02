@@ -94,7 +94,7 @@ AFRAME.registerComponent('movement-listener', {
   update: function() {
     const rig = this.data.cameraRig || this.el.sceneEl.camera.el;
     var currentPosition = rig.getAttribute('position');
-    rig.setAttribute('position', {x: currentPosition.x + this.data.speed, y: 510, z: 200});
+    rig.setAttribute('position', {x: currentPosition.x + this.data.speed, y: 510, z: 300});
   },
 
   tick: function(time, delta) {
@@ -109,11 +109,11 @@ AFRAME.registerComponent('movement-listener', {
     if (this.trigger) {
       // Move position forward
       currentPosition = rig.getAttribute('position');
-      rig.setAttribute('position', {x: currentPosition.x + data.speed, y: 510, z: 200});
+      rig.setAttribute('position', {x: currentPosition.x + data.speed, y: 510, z: 300});
     } else if (this.grippad) {
       // If grippad is active, move backwards
       currentPosition = rig.getAttribute('position');
-      rig.setAttribute('position', {x: currentPosition.x - data.speed, y: 510, z: 200});
+      rig.setAttribute('position', {x: currentPosition.x - data.speed, y: 510, z: 300});
     }
   },
 
