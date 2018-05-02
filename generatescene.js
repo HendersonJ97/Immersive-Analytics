@@ -299,7 +299,7 @@ AFRAME.registerComponent('axis', {
     var geoNeedsUpdate = false;
     var material = this.material;
     var mesh = this.mesh;
-    var text = d3.select(this).select("a-text");
+    var text = d3.select(this.el).select("a-text");
 
     // Geometry change
     if (data.positionX !== oldData.positionX ||
