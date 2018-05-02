@@ -172,8 +172,6 @@ d3.csv("cars.csv", function(cars) {
       var text = entity.append("a-text");
       text.attr("value", datum);
       text.attr("align", "center");
-      text.attr("scale", "40 40 40");
-      text.attr("position", "0 " + (height + 10) + " 0");
     });
 });
 
@@ -346,9 +344,9 @@ AFRAME.registerComponent('axis', {
     }
     
     // Update text
-    text.setAttribute("position", "0 " + (data.height + 10) + " 0");
+    text.setAttribute("position", { x: 0, y: data.height + 10, z: 0 });
     text.setAttribute("name", data.name);
-    text.setAttribute("scale", "40 40 40");
+    text.setAttribute("scale", { x: 40, y: 40, z: 40 });
     
     // Update mesh position and colour
     mesh.position.set(data.positionX, data.height / 2, data.positionZ);
