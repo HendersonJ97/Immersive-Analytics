@@ -172,6 +172,7 @@ d3.csv("cars.csv", function(cars) {
       var text = entity.append("a-text");
       text.attr("value", datum);
       text.attr("align", "center");
+      text.attr("scale", "40 40 40");
       text.attr("position", "0 " + (height + 10) + " 0");
     });
 });
@@ -299,7 +300,7 @@ AFRAME.registerComponent('axis', {
     var geoNeedsUpdate = false;
     var material = this.material;
     var mesh = this.mesh;
-    var text = d3.select(this.el).select("a-text");
+    var text = this.el.children[0];
 
     // Geometry change
     if (data.positionX !== oldData.positionX ||
@@ -345,7 +346,9 @@ AFRAME.registerComponent('axis', {
     }
     
     // Update text
-    text.attr("position", "0 " + (data.height + 10) + " 0");
+    text.setAttribute("position", "0 " + (data.height + 10) + " 0");
+    text.setAttribute("name", data.name);
+    text.setAttribute("scale", "40 40 40");
     
     // Update mesh position and colour
     mesh.position.set(data.positionX, data.height / 2, data.positionZ);
