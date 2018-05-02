@@ -85,8 +85,8 @@ AFRAME.registerComponent('movement-listener', {
     this.onGripDown = this.onGripDown.bind(this);
     this.onTriggerDown = this.onTriggerDown.bind(this);
     // Set the event listeners for each button event
-    el.addEventListener('pistolstart', this.onTriggerUp);
-    el.addEventListener('pistolend', this.onTriggerDown);
+    el.addEventListener('thumbup', this.onTriggerUp);
+    el.addEventListener('thumbdown', this.onTriggerDown);
     el.addEventListener('gripup', this.onGripUp);
     el.addEventListener('gripdown', this.onGripDown);
   },
