@@ -15,7 +15,7 @@
         <!-- camera -->
         <a-entity id="head" camera wasd-controls look-controls></a-entity>
         <!-- hand controls -->
-        <a-entity id="left-hand" gamepad-controls vive-controls="hand: left"></a-entity>
+        <a-entity id="left-hand" movement-listener vive-controls="hand: left"></a-entity>
         <a-entity id="right-hand" controller-listener laser-controls="hand: right" line="color: red"></a-entity>
       </a-entity>
       <a-sky color='#4CC3D9' fuse timeout='100'></a-sky>
