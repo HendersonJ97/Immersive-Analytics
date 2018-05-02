@@ -78,8 +78,6 @@ AFRAME.registerComponent('movement-listener', {
     // Record if buttons are active
     this.trigger = false;
     this.grippad = false;
-    // Holds current position
-    this.position = {};
     var el = this.el;
 
     // Set the event listeners for each button event
@@ -102,13 +100,11 @@ AFRAME.registerComponent('movement-listener', {
     if (this.trigger) {
       // Move position forward
       currentPosition = rig.getAttribute('position');
-      position.x = currentPosition.x + data.speed;
-      rig.setAttribute('position', position);
+      rig.setAttribute('position', {x: currentPosition.x + data.speed, y: currentPosition.y, z: currentPosition.z});
     } else if (this.grippad) {
       // If grippad is active, move backwards
       currentPosition = rig.getAttribute('position');
-      position.x = currentPosition.x - data.speed;
-      rig.setAttribute('position', position);
+      rig.setAttribute('position', {x: currentPosition.x - data.speed, y: currentPosition.y, z: currentPosition.z});
     }
   },
 
