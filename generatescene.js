@@ -168,6 +168,11 @@ d3.csv("cars.csv", function(cars) {
       entity.attr("height", height);
       entity.attr("minvalue", boundaries[0]);
       entity.attr("maxvalue", boundaries[1]);
+    
+      var text = entity.append("a-text");
+      text.attr("value", datum);
+      text.attr("align", "center");
+      text.attr("position", "0 " + (height + 10) + " 0");
     });
 });
 
