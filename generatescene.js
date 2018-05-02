@@ -45,7 +45,7 @@ AFRAME.registerComponent('controller-listener', {
         if (!(typeof axis === "undefined")) {
           // Axis
 
-          previousColour = selectedElement.getAttribute('colour');
+          previousColour = axis.colour;
           holding = true;
           // Give visual feedback
           selectedElement.setAttribute('colour', 'orange');
