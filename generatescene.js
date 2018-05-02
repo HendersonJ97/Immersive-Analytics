@@ -89,17 +89,18 @@ AFRAME.registerComponent('movement-listener', {
     el.addEventListener('pistolend', this.onTriggerDown);
     el.addEventListener('gripup', this.onGripUp);
     el.addEventListener('gripdown', this.onGripDown);
-    
-    const rig = data.cameraRig || el.sceneEl.camera.el;
-    currentPosition = rig.getAttribute('position');
-    rig.setAttribute('position', {x: currentPosition.x + data.speed, y: 510, z: 200});
+  },
+  
+  update: function() {
+    const rig = this.data.cameraRig || this.el.sceneEl.camera.el;
+    var currentPosition = rig.getAttribute('position');
+    rig.setAttribute('position', {x: currentPosition.x + this.data.speed, y: 510, z: 200});
   },
 
   tick: function(time, delta) {
     var currentPosition;
     var data = this.data;
     var el = this.el;
-    var position = this.position;
     var speed = this.speed;
 
     // Retrieve the camera rig, or camera element
