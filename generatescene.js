@@ -89,6 +89,10 @@ AFRAME.registerComponent('movement-listener', {
     el.addEventListener('pistolend', this.onTriggerDown);
     el.addEventListener('gripup', this.onGripUp);
     el.addEventListener('gripdown', this.onGripDown);
+    
+    const rig = data.cameraRig || el.sceneEl.camera.el;
+    currentPosition = rig.getAttribute('position');
+    rig.setAttribute('position', {x: currentPosition.x + data.speed, y: 510, z: 200});
   },
 
   tick: function(time, delta) {
@@ -104,11 +108,11 @@ AFRAME.registerComponent('movement-listener', {
     if (this.trigger) {
       // Move position forward
       currentPosition = rig.getAttribute('position');
-      rig.setAttribute('position', {x: currentPosition.x + data.speed, y: currentPosition.y, z: currentPosition.z});
+      rig.setAttribute('position', {x: currentPosition.x + data.speed, y: 510, z: 200});
     } else if (this.grippad) {
       // If grippad is active, move backwards
       currentPosition = rig.getAttribute('position');
-      rig.setAttribute('position', {x: currentPosition.x - data.speed, y: currentPosition.y, z: currentPosition.z});
+      rig.setAttribute('position', {x: currentPosition.x - data.speed, y: 510, z: 200});
     }
   },
 
