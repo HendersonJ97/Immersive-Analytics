@@ -13,7 +13,7 @@ var csvData;
 var names;
 
 var offsetx = 500;
-var zOffset = 0;
+var zOffset = -100;
 
 var selectedElement;
 var ghostElement;
