@@ -344,9 +344,9 @@ AFRAME.registerComponent('axis', {
     }
     
     // Update text
-    text.setAttribute("position", { x: 0, y: data.height + 10, z: 0 });
+    text.object3D.position.set(0, data.height + 10, 0);
+    text.object3D.scale.set(40, 40, 40);
     text.setAttribute("name", data.name);
-    text.setAttribute("scale", { x: 40, y: 40, z: 40 });
     
     // Update mesh position and colour
     mesh.position.set(data.positionX, data.height / 2, data.positionZ);
