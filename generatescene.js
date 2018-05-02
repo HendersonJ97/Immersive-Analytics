@@ -350,6 +350,9 @@ AFRAME.registerComponent('axis', {
     text.setAttribute("name", data.name);
     text.object3D.updateMatrixWorld();
     
+    text.setAttribute('position', {x: data.positionX, y: data.height + 10, z: data.positionZ});
+    text.setAttribute('scale', {x: 40, y: 40, z: 40});
+    
     // Update mesh position and colour
     mesh.position.set(data.positionX, data.height / 2, data.positionZ);
     material.color.set(data.colour);
