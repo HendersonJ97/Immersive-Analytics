@@ -20,6 +20,7 @@ var ghostElement;
 var holding = false;
 var previousColour;
 
+// Register a controller to move axes
 AFRAME.registerComponent('controller-listener', {
   init: function() {
 
@@ -33,6 +34,7 @@ AFRAME.registerComponent('controller-listener', {
         // Move the select element to the new position
         selectedElement.setAttribute('positionX', newCoords.x);
         selectedElement.setAttribute('positionZ', newCoords.z);
+        // Reset the colour
         selectedElement.setAttribute('colour', previousColour);
 
         holding = false;
@@ -43,8 +45,9 @@ AFRAME.registerComponent('controller-listener', {
         var axis = selectedElement.getAttribute('axis');
 
         if (!(typeof axis === "undefined")) {
-          // Axis
+          // If an Axis is selected
 
+          // Store the current colour
           previousColour = axis.colour;
           holding = true;
           // Give visual feedback
@@ -55,6 +58,7 @@ AFRAME.registerComponent('controller-listener', {
   }
 });
 
+// Register a controller to move within the scene
 AFRAME.registerComponent('movement-listener', {
   schema: {
     cameraRig: {
@@ -72,10 +76,12 @@ AFRAME.registerComponent('movement-listener', {
     this.grippad = false;
     var el = this.el;
 
+    // Bind all controls
     this.onTriggerUp = this.onTriggerUp.bind(this);
     this.onGripUp = this.onGripUp.bind(this);
     this.onGripDown = this.onGripDown.bind(this);
     this.onTriggerDown = this.onTriggerDown.bind(this);
+    
     // Set the event listeners for each button event
     el.addEventListener('triggerup', this.onTriggerUp);
     el.addEventListener('triggerdown', this.onTriggerDown);
@@ -84,12 +90,14 @@ AFRAME.registerComponent('movement-listener', {
   },
   
   update: function() {
+    // Update the position of the camera rig on component change
     const rig = this.data.cameraRig || this.el.sceneEl.camera.el;
     var currentPosition = rig.getAttribute('position');
     rig.setAttribute('position', {x: currentPosition.x + this.data.speed, y: 510, z: 300});
   },
 
   tick: function(time, delta) {
+    // Move the camera rig in the desired direction
     var currentPosition;
     var data = this.data;
     var el = this.el;
@@ -126,12 +134,14 @@ AFRAME.registerComponent('movement-listener', {
   }
 });
 
+// Import CSV data and generate axes
 d3.csv("cars.csv", function(cars) {
   // Store data
   csvData = cars;
   csvData.map(function(d) {
     return +d;
   });
+  
   // Generate axes
   // Delete old axis (if they exist)
   d3.select("a-scene").selectAll("a-datum").remove();
@@ -139,10 +149,13 @@ d3.csv("cars.csv", function(cars) {
   names = d3.keys(cars[0]).filter(function(column_name) {
     return column_name != "name";
   })
+  
+  // Create a scale to align in the world x-axis
   var xScale = d3.scale.linear();
   xScale.range([0, width]);
   xScale.domain([0, (names.length - 1)]);
 
+  // Join data array to generate axis elements
   d3.select("a-scene").selectAll("a-axis")
     .data(names)
     .enter()
@@ -172,6 +185,7 @@ d3.csv("cars.csv", function(cars) {
     });
 });
 
+// Generate data connections between axes
 function generateLines(sector, lineColour) {
   if (sector < 0) {
     // No section here
