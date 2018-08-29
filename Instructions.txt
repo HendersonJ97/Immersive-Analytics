@@ -1,0 +1,8 @@
+This program requires both the HTC Vive head-mounted display and a set of Vive Controllers to be plugged into the computer used. Without them it will not work as intended.
+
+To create your own instance of the program, please upload 'vrplot.html', 'generatescene.js', and 'cars.csv' to the same directory of a HTTPS-enabled web server, and then navigate to 'vrplot.html'.
+
+To run the premade instance of the program, please navigate to https://hendersonj97.github.io/Immersive-Analytics/vrplot.html
+
+Once on the page, press the button in the bottom right corner to enable VR.
+Instructions for the controllers will be displayed above the relevant model.
